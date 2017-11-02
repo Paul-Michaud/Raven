@@ -14,3 +14,5 @@
 *.log
 *.exe
 Debug/
+Backup*/
+Release/
