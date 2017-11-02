@@ -1,0 +1,5 @@
+As the Raven code stands, the prediction of a target’s future position for
+weapon aiming is based upon its instantaneous velocity — the velocity at which
+it is moving at the time of the calculation. However, this can give poor results,
+especially if the target is dodging around a lot. A more accurate method is to
+take the average of the target’s velocity sampled over the last t time steps.
