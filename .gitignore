@@ -1,0 +1,16 @@
+
+*.suo
+*.db
+*.ipch
+*.obj
+*.sbr
+*.idb
+*.opendb
+*.tlog
+*.pdb
+*.bsc
+*.ilk
+*.htm
+*.log
+*.exe
+Debug/
