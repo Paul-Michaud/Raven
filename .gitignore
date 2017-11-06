@@ -13,7 +13,8 @@
 *.htm
 *.log
 *.exe
-Debug/
+*.asm
+/Debug/
 Release/
 Backup*/
 .vs/
