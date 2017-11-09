@@ -152,7 +152,14 @@ public:
   void        GetPlayerInput()const;
   Raven_Bot*  PossessedBot()const{return m_pSelectedBot;}
   void        ChangeWeaponOfPossessedBot(unsigned int weapon)const;
-
+  
+  //this method is called when the user press the E key
+  // If there is a possessed bot, this will tell the bot to go up, else does 
+  // nothing
+  void		  moveUp();
+  void		  moveDown();
+  void		  moveLeft();
+  void		  moveRight();
   
   const Raven_Map* const                   GetMap()const{return m_pMap;}
   Raven_Map* const                         GetMap(){return m_pMap;}

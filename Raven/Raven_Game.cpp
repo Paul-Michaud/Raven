@@ -415,6 +415,46 @@ void Raven_Game::ExorciseAnyPossessedBot()
 }
 
 
+//------------------------- Movements Functions ---------------------------
+//
+//  when called will make the possessed bot go in a specified direction
+//-----------------------------------------------------------------------------
+void Raven_Game::moveUp() {
+	if (m_pSelectedBot) {
+		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x, m_pSelectedBot->Pos().y - 7);
+		//Test pas ouf
+		//m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(desiredPos);
+		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
+		m_pSelectedBot->SetVelocity(Vector2D(0, m_pSelectedBot->MaxSpeed()*-1));
+	}
+}
+
+void Raven_Game::moveDown() {
+	if (m_pSelectedBot) {
+		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x, m_pSelectedBot->Pos().y + 7);
+		m_pSelectedBot->SetVelocity(Vector2D(0,0));
+		m_pSelectedBot->SetVelocity(Vector2D(0, m_pSelectedBot->MaxSpeed()));
+
+	}
+}
+
+void Raven_Game::moveLeft() {
+	if (m_pSelectedBot) {
+		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x - 7, m_pSelectedBot->Pos().y);
+		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
+		m_pSelectedBot->SetVelocity(Vector2D(m_pSelectedBot->MaxSpeed()*-1, 0));
+
+	}
+}
+
+void Raven_Game::moveRight() {
+	if (m_pSelectedBot) {
+		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x + 7, m_pSelectedBot->Pos().y);
+		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
+		m_pSelectedBot->SetVelocity(Vector2D(m_pSelectedBot->MaxSpeed(), 0));
+
+	}
+}
 //-------------------------- ClickRightMouseButton -----------------------------
 //
 //  this method is called when the user clicks the right mouse button.
@@ -428,7 +468,7 @@ void Raven_Game::ExorciseAnyPossessedBot()
 void Raven_Game::ClickRightMouseButton(POINTS p)
 {
   Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
-
+  
   //if there is no selected bot just return;
   if (!pBot && m_pSelectedBot == NULL) return;
 
@@ -452,24 +492,25 @@ void Raven_Game::ClickRightMouseButton(POINTS p)
     m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
   }
 
-  //if the bot is possessed then a right click moves the bot to the cursor
-  //position
-  if (m_pSelectedBot->isPossessed())
-  {
-    //if the shift key is pressed down at the same time as clicking then the
-    //movement command will be queued
-    if (IS_KEY_PRESSED('Q'))
-    {
-      m_pSelectedBot->GetBrain()->QueueGoal_MoveToPosition(POINTStoVector(p));
-    }
-    else
-    {
-      //clear any current goals
-      m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
+  // Don't need anymore since we control the bot with the keyboard
+  ////if the bot is possessed then a right click moves the bot to the cursor
+  ////position
+  //if (m_pSelectedBot->isPossessed())
+  //{
+  //  //if the shift key is pressed down at the same time as clicking then the
+  //  //movement command will be queued
+  //  if (IS_KEY_PRESSED('Q'))
+  //  {
+  //    m_pSelectedBot->GetBrain()->QueueGoal_MoveToPosition(POINTStoVector(p));
+  //  }
+  //  else
+  //  {
+  //    //clear any current goals
+  //    m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
 
-      m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
-    }
-  }
+  //    m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
+  //  }
+  //}
 }
 
 //---------------------- ClickLeftMouseButton ---------------------------------
