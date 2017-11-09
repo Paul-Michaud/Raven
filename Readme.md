@@ -13,12 +13,7 @@ Esmé James - JAME15539504
 
 Contient le code source du TP ainsi que l'exécutable
 
-### Rapport.pdf
-
-Contient les réponses aux questions + quelques précisions
-
 
 ### Modifications réalisées par rapport au code source initial
 
 1) Ajout de règles pour les variables floues (distance à la cible, état des munitions, désirabilité) de l'arme de type RocketLauncher. Ces variables possèdent désormais 5 ensembles.
-
