@@ -3,11 +3,11 @@
 
 ### Membres
 
-Esmé James        JAME15539504
-Paul Michaud      MICP25059508
-Théo Debay        DEBT17049501
-Rénald Morice     MORR14029503
-Wilfried Pouchous POUW04069501
+Esmé James - JAME15539504
+<br/>Paul Michaud - MICP25059508
+<br/>Théo Debay - DEBT17049501
+<br/>Rénald Morice - MORR14029503
+<br/>Wilfried Pouchous - POUW04069501
 
 ### Dossier "Raven"
 
