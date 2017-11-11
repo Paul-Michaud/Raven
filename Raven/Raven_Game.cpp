@@ -26,6 +26,8 @@
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Goal_Types.h"
 
+#include "debug/DebugConsole.h"
+
 
 
 //uncomment to write object creation/deletion to debug console
@@ -415,46 +417,33 @@ void Raven_Game::ExorciseAnyPossessedBot()
 }
 
 
-//------------------------- Movements Functions ---------------------------
+//------------------------- Movements Controler ---------------------------
 //
-//  when called will make the possessed bot go in a specified direction
-//-----------------------------------------------------------------------------
-void Raven_Game::moveUp() {
+//  if there is a selectd bot tell it to move according to the key pressed
+//-------------------------------------------------------------------------
+
+void Raven_Game::movementControler(int action) {
 	if (m_pSelectedBot) {
-		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x, m_pSelectedBot->Pos().y - 7);
-		//Test pas ouf
-		//m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(desiredPos);
-		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
-		m_pSelectedBot->SetVelocity(Vector2D(0, m_pSelectedBot->MaxSpeed()*-1));
+		switch (action) {
+		case 1:
+			m_pSelectedBot->accelerate();
+			break;
+		case 2:
+			m_pSelectedBot->decelerate();
+			break;
+		case 3:
+			m_pSelectedBot->turnLeft();
+			break;
+		case 4:
+			m_pSelectedBot->turnRight();
+			break;
+		}
+	}
+	else {
+		debug_con << "\nTrying to control a bot, but not bot selected" << "";
 	}
 }
 
-void Raven_Game::moveDown() {
-	if (m_pSelectedBot) {
-		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x, m_pSelectedBot->Pos().y + 7);
-		m_pSelectedBot->SetVelocity(Vector2D(0,0));
-		m_pSelectedBot->SetVelocity(Vector2D(0, m_pSelectedBot->MaxSpeed()));
-
-	}
-}
-
-void Raven_Game::moveLeft() {
-	if (m_pSelectedBot) {
-		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x - 7, m_pSelectedBot->Pos().y);
-		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
-		m_pSelectedBot->SetVelocity(Vector2D(m_pSelectedBot->MaxSpeed()*-1, 0));
-
-	}
-}
-
-void Raven_Game::moveRight() {
-	if (m_pSelectedBot) {
-		Vector2D desiredPos = Vector2D(m_pSelectedBot->Pos().x + 7, m_pSelectedBot->Pos().y);
-		m_pSelectedBot->SetVelocity(Vector2D(0, 0));
-		m_pSelectedBot->SetVelocity(Vector2D(m_pSelectedBot->MaxSpeed(), 0));
-
-	}
-}
 //-------------------------- ClickRightMouseButton -----------------------------
 //
 //  this method is called when the user clicks the right mouse button.
@@ -532,8 +521,8 @@ void Raven_Game::GetPlayerInput()const
 {
   if (m_pSelectedBot && m_pSelectedBot->isPossessed())
   {
-      m_pSelectedBot->RotateFacingTowardPosition(GetClientCursorPosition());
-   }
+	m_pSelectedBot->RotateFacingTowardPosition(GetClientCursorPosition());
+  }
 }
 
 

@@ -472,6 +472,28 @@ bool Raven_Bot::canStepBackward(Vector2D& PositionOfStep)const
   return canWalkTo(PositionOfStep);
 }
 
+//------------------------------ Movements function -------
+//
+//  
+//---------------------------------------------------------
+void Raven_Bot::turnLeft() {
+	this->SetVelocity(Vector2D(this->MaxSpeed()*-1, 0));
+}
+
+void Raven_Bot::turnRight() {
+	this->SetVelocity(Vector2D(this->MaxSpeed(), 0));
+}
+
+
+void Raven_Bot::accelerate() {
+	this->SetVelocity(Vector2D(0, this->MaxSpeed()*-1));
+}
+
+
+void Raven_Bot::decelerate() {
+	this->SetVelocity(Vector2D(0, this->MaxSpeed()));
+}
+
 //--------------------------- Render -------------------------------------
 //
 //------------------------------------------------------------------------

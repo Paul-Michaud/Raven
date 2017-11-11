@@ -199,6 +199,12 @@ public:
   bool          canStepForward(Vector2D& PositionOfStep)const;
   bool          canStepBackward(Vector2D& PositionOfStep)const;
 
+  //Movements functions
+  // These methods are used to control a bot's movements
+  void		  accelerate();
+  void		  decelerate();
+  void		  turnLeft();
+  void		  turnRight();
   
   Raven_Game* const                  GetWorld(){return m_pWorld;} 
   Raven_Steering* const              GetSteering(){return m_pSteering;}

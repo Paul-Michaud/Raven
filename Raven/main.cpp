@@ -178,24 +178,23 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 	case WM_KEYDOWN: {
 		switch (wParam) {
 			case 'E': {
-				g_pRaven->moveUp();
-				break;
-			}
 
-			case 'D': {
-				g_pRaven->moveDown();
-				break;
+				g_pRaven->movementControler(1);
 			}
+			break;
+			case 'D': {
+				g_pRaven->movementControler(2);
+			}
+			break;
 
 			case 'S': {
-				g_pRaven->moveLeft();
-				break;
+				g_pRaven->movementControler(3);
 			}
-
+			break;
 			case 'F': {
-				g_pRaven->moveRight();
-				break;
+				g_pRaven->movementControler(4);
 			}
+			break;
 		}
 
 	}
