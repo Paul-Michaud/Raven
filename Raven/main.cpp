@@ -178,7 +178,6 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 	case WM_KEYDOWN: {
 		switch (wParam) {
 			case 'E': {
-
 				g_pRaven->movementControler(1);
 			}
 			break;
