@@ -162,7 +162,6 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
            break;
 
-
          case VK_UP:
 
            g_pRaven->AddBots(1); break;
@@ -176,11 +175,32 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
       }
 
       break;
+	case WM_KEYDOWN: {
+		switch (wParam) {
+			case 'E': {
+				g_pRaven->movementControler(1);
+			}
+			break;
+			case 'D': {
+				g_pRaven->movementControler(2);
+			}
+			break;
 
+			case 'S': {
+				g_pRaven->movementControler(3);
+			}
+			break;
+			case 'F': {
+				g_pRaven->movementControler(4);
+			}
+			break;
+		}
+
+	}
 
     case WM_LBUTTONDOWN:
     {
-      g_pRaven->ClickLeftMouseButton(MAKEPOINTS(lParam));
+		if(wParam == 1) g_pRaven->ClickLeftMouseButton(MAKEPOINTS(lParam));
     }
     
     break;

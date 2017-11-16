@@ -26,6 +26,8 @@
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Goal_Types.h"
 
+#include "debug/DebugConsole.h"
+
 
 
 //uncomment to write object creation/deletion to debug console
@@ -415,6 +417,33 @@ void Raven_Game::ExorciseAnyPossessedBot()
 }
 
 
+//------------------------- Movements Controler ---------------------------
+//
+//  if there is a selectd bot tell it to move according to the key pressed
+//-------------------------------------------------------------------------
+
+void Raven_Game::movementControler(int action) {
+	if (m_pSelectedBot) {
+		switch (action) {
+		case 1:
+			m_pSelectedBot->accelerate();
+			break;
+		case 2:
+			m_pSelectedBot->decelerate();
+			break;
+		case 3:
+			m_pSelectedBot->turnLeft();
+			break;
+		case 4:
+			m_pSelectedBot->turnRight();
+			break;
+		}
+	}
+	else {
+		debug_con << "\nTrying to control a bot, but not bot selected" << "";
+	}
+}
+
 //-------------------------- ClickRightMouseButton -----------------------------
 //
 //  this method is called when the user clicks the right mouse button.
@@ -428,7 +457,7 @@ void Raven_Game::ExorciseAnyPossessedBot()
 void Raven_Game::ClickRightMouseButton(POINTS p)
 {
   Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
-
+  
   //if there is no selected bot just return;
   if (!pBot && m_pSelectedBot == NULL) return;
 
@@ -452,24 +481,25 @@ void Raven_Game::ClickRightMouseButton(POINTS p)
     m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
   }
 
-  //if the bot is possessed then a right click moves the bot to the cursor
-  //position
-  if (m_pSelectedBot->isPossessed())
-  {
-    //if the shift key is pressed down at the same time as clicking then the
-    //movement command will be queued
-    if (IS_KEY_PRESSED('Q'))
-    {
-      m_pSelectedBot->GetBrain()->QueueGoal_MoveToPosition(POINTStoVector(p));
-    }
-    else
-    {
-      //clear any current goals
-      m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
+  // Don't need anymore since we control the bot with the keyboard
+  ////if the bot is possessed then a right click moves the bot to the cursor
+  ////position
+  //if (m_pSelectedBot->isPossessed())
+  //{
+  //  //if the shift key is pressed down at the same time as clicking then the
+  //  //movement command will be queued
+  //  if (IS_KEY_PRESSED('Q'))
+  //  {
+  //    m_pSelectedBot->GetBrain()->QueueGoal_MoveToPosition(POINTStoVector(p));
+  //  }
+  //  else
+  //  {
+  //    //clear any current goals
+  //    m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
 
-      m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
-    }
-  }
+  //    m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
+  //  }
+  //}
 }
 
 //---------------------- ClickLeftMouseButton ---------------------------------
@@ -491,8 +521,8 @@ void Raven_Game::GetPlayerInput()const
 {
   if (m_pSelectedBot && m_pSelectedBot->isPossessed())
   {
-      m_pSelectedBot->RotateFacingTowardPosition(GetClientCursorPosition());
-   }
+	m_pSelectedBot->RotateFacingTowardPosition(GetClientCursorPosition());
+  }
 }
 
 

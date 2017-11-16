@@ -152,8 +152,10 @@ public:
   void        GetPlayerInput()const;
   Raven_Bot*  PossessedBot()const{return m_pSelectedBot;}
   void        ChangeWeaponOfPossessedBot(unsigned int weapon)const;
-
   
+  //method used to 
+  void			movementControler(int action);
+
   const Raven_Map* const                   GetMap()const{return m_pMap;}
   Raven_Map* const                         GetMap(){return m_pMap;}
   const std::list<Raven_Bot*>&             GetAllBots()const{return m_Bots;}
