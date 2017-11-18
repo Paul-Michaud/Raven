@@ -19,3 +19,9 @@ Contient le code source du TP ainsi que l'exécutable
 1) Ajout de règles pour les variables floues (distance à la cible, état des munitions, désirabilité) de l'arme de type RocketLauncher. Ces variables possèdent désormais 5 ensembles. Fichier(s) modifié(s) :
 
     * Weapon_RocketLauncher.cpp
+
+	
+a)création class raven_bot_learner
+b)besoin de savoir quand un bot a tiré ou a voulu tiré -> création d'un membre de raven_bot 
+qu'on met a true quand on a voulu tiré, il sera remit à false quand le learner aura aprris de ce cas la
+c)a chaque (?) update du learner on sauvegarde les infos des autres bots (VITESSE DISTTOTARGET  AMMO TIMEVISIBLE HASFIRED)

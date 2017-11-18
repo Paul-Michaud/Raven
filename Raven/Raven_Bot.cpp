@@ -46,7 +46,9 @@ Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):
                  m_iScore(0),
                  m_Status(spawning),
                  m_bPossessed(false),
+				 m_bHasFired(false),
                  m_dFieldOfView(DegsToRads(script->GetDouble("Bot_FOV")))
+				 
            
 {
   SetEntityType(type_bot);
@@ -159,7 +161,15 @@ void Raven_Bot::Update()
 
     //this method aims the bot's current weapon at the current target
     //and takes a shot if a shot is possible
-    m_pWeaponSys->TakeAimAndShoot();
+	if (m_pWeaponSys->TakeAimAndShoot()) {
+		this->SetFiredStatus(true);
+	}
+	else {
+		//We don't set hasFired status to false here because we want to make sure that
+		//the bot has learn the case, so it'll be set as false by the learner bot
+
+	}
+
   }
 }
 
