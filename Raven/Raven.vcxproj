@@ -541,6 +541,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Perceptron.hpp" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Bot_Learner.h" />
     <ClInclude Include="Raven_Game.h" />
@@ -626,6 +627,7 @@
     <ClInclude Include="..\Common\Messaging\Telegram.h" />
     <ClInclude Include="Raven_SensoryMemory.h" />
     <ClInclude Include="..\Common\Triggers\Trigger.h" />
+    <ClInclude Include="TrainingItem.hpp" />
     <ClInclude Include="triggers\Trigger_HealthGiver.h" />
     <ClInclude Include="..\Common\Triggers\Trigger_LimitedLifeTime.h" />
     <ClInclude Include="triggers\Trigger_OnButtonSendMsg.h" />

@@ -612,6 +612,8 @@
     <ClInclude Include="Raven_Bot_Learner.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Perceptron.hpp" />
+    <ClInclude Include="TrainingItem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

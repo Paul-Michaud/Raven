@@ -5,6 +5,8 @@
 #include "armory/Raven_Weapon.h"
 #include "debug/DebugConsole.h"
 #include <vector>
+#include "Perceptron.hpp"
+
 
 using namespace std;
 
@@ -16,10 +18,13 @@ public:
 	void         Update();
 	void		saveData();
 
+
 	~Raven_Bot_Learner();
 
 
 private:
+	Perceptron *perceptron;
+
 	std::list<Raven_Bot*> &m_Bots;
 
 

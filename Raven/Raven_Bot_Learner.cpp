@@ -8,32 +8,44 @@ using namespace std;
 
 
 Raven_Bot_Learner::Raven_Bot_Learner(Raven_Game* world, Vector2D pos, std::list<Raven_Bot*> &bots):Raven_Bot(world, pos), m_Bots(bots) {
-
 	ifstream file("Data/LearningData.csv");
 	string value;
+
+	int cptr = 0;
+
+	std::vector<TrainingItem> training_set;
+
 	while (file.good()) {
 		getline(file, value);
 
-		string line = value;
-		string arr[6];
-		int i = 0;
-		stringstream ssin(line);
-		while (ssin.good() && i < 6) {
-			ssin >> arr[i];
-			++i;
+		if (!value.empty()) {
+			string line = value;
+			string arr[6];
+			int i = 0;
+			stringstream ssin(line);
+			while (ssin.good() && i < 6) {
+				ssin >> arr[i];
+				++i;
+			}
+
+			//Convert string to bool
+			bool hasFired;
+			istringstream(arr[0]) >> hasFired;
+			//HasFired, DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo
+
+			TrainingItem tempTrainingItem = TrainingItem(hasFired, { stod(arr[1]), stod(arr[2]), stod(arr[3]), stod(arr[4]),stod(arr[5]) });
+
+			training_set.push_back(tempTrainingItem);
+
 		}
-		
-			debug_con << arr[0] << "";
-			debug_con << arr[1] << "";
-			debug_con << arr[2] << "";
-			debug_con << arr[3] << "";
-			debug_con << arr[4] << "";
-			debug_con << arr[5] << "";
-
-		debug_con << "NEXT" << "";
-
 	}
+	debug_con << "Training set created" << "";
 
+	perceptron = new Perceptron(5);
+
+	debug_con << "Training..." << "";
+	(*perceptron).train(training_set, 20);
+	debug_con << "Trainined" << "";
 }
 
 void Raven_Bot_Learner::Update() {
@@ -69,23 +81,14 @@ void Raven_Bot_Learner::saveData() {
 	double Ammo = (double)(*curBot)->GetWeaponSys()->GetAmmoRemainingForWeapon(WeaponType);
 
 
-	//debug_con << "DistToTarget : " << DistToTarget << "";
-	//debug_con << "Velocity : " << Velocity << "";
-	//debug_con << "TimeTargetHasBeenVisible : " << TimeTargetHasBeenVisible << "";
-	//debug_con << "HasFired : " << HasFired << "";
-	//debug_con << "WeaponType : " << WeaponType << "";
-	//debug_con << "Ammo : " << Ammo << "";
-	//debug_con << "----------------------------------" << "";
-	//debug_con << "                UPDATE             " << "";
-	//debug_con << "----------------------------------" << "";
 
 
 	std::vector<double> data;
 
+	data.push_back((double)HasFired);
 	data.push_back(DistToTarget);
 	data.push_back(Velocity);
 	data.push_back(TimeTargetHasBeenVisible);
-	data.push_back((double)HasFired);
 	data.push_back((double)WeaponType);
 	data.push_back(Ammo);
 
