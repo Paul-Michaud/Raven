@@ -17,6 +17,7 @@ public:
 	Raven_Bot_Learner(Raven_Game* world, Vector2D pos, std::list<Raven_Bot*> &m_Bots);
 	void         Update();
 	void		saveData();
+	ofstream	dataFile;
 
 
 	~Raven_Bot_Learner();

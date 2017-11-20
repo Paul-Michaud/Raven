@@ -8,49 +8,83 @@ using namespace std;
 
 
 Raven_Bot_Learner::Raven_Bot_Learner(Raven_Game* world, Vector2D pos, std::list<Raven_Bot*> &bots):Raven_Bot(world, pos), m_Bots(bots) {
-	ifstream file("Data/LearningData.csv");
-	string value;
+	dataFile.open("Data/LearningData.csv", std::ofstream::app);
 
-	int cptr = 0;
+	//ifstream file("Data/LearningData.csv");
+	//string value;
 
-	std::vector<TrainingItem> training_set;
+	//std::vector<TrainingItem> training_set;
 
-	while (file.good()) {
-		getline(file, value);
+	//while (file.good()) {
+	//	getline(file, value);
 
-		if (!value.empty()) {
-			string line = value;
-			string arr[6];
-			int i = 0;
-			stringstream ssin(line);
-			while (ssin.good() && i < 6) {
-				ssin >> arr[i];
-				++i;
-			}
+	//	if (!value.empty()) {
+	//		string line = value;
+	//		string arr[6];
+	//		int i = 0;
+	//		stringstream ssin(line);
+	//		while (ssin.good() && i < 6) {
+	//			ssin >> arr[i];
+	//			++i;
+	//		}
 
-			//Convert string to bool
-			bool hasFired;
-			istringstream(arr[0]) >> hasFired;
-			//HasFired, DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo
+	//		//Convert string to bool
+	//		bool hasFired;
+	//		istringstream(arr[0]) >> hasFired;
+	//		//HasFired, DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo
 
-			TrainingItem tempTrainingItem = TrainingItem(hasFired, { stod(arr[1]), stod(arr[2]), stod(arr[3]), stod(arr[4]),stod(arr[5]) });
+	//		TrainingItem tempTrainingItem = TrainingItem(hasFired, { stod(arr[1]), stod(arr[2]), stod(arr[3]), stod(arr[4]),stod(arr[5]) });
 
-			training_set.push_back(tempTrainingItem);
+	//		training_set.push_back(tempTrainingItem);
 
-		}
-	}
-	debug_con << "Training set created" << "";
+	//	}
+	//}
+	//debug_con << "Training set created" << "";
 
-	perceptron = new Perceptron(5);
+	//perceptron = new Perceptron(5);
 
-	debug_con << "Training..." << "";
-	(*perceptron).train(training_set, 20);
-	debug_con << "Trainined" << "";
+	//debug_con << "Training..." << "";
+	//(*perceptron).train(training_set, 20);
+	//debug_con << "Trainined" << "";
+
+
+	////TESTS
+
+	////creation des items de tests
+	//ifstream testfile("Data/TestData.csv");
+
+	//int cptr = 0;
+	//int ok = 0;
+	//while (testfile.good()) {
+	//	getline(testfile, value);
+
+	//	if (!value.empty()) {
+	//		string line = value;
+	//		string arr[6];
+	//		int i = 0;
+	//		stringstream ssin(line);
+	//		while (ssin.good() && i < 6) {
+	//			ssin >> arr[i];
+	//			++i;
+	//		}
+
+	//		cptr++;
+	//		//Convert string to bool
+	//		bool hasFired;
+	//		istringstream(arr[0]) >> hasFired;
+	//		//HasFired, DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo
+	//		if ((*perceptron).get_result({ stod(arr[1]), stod(arr[2]), stod(arr[3]), stod(arr[4]),stod(arr[5]) }) == hasFired) ok++;
+
+	//	}
+	//}
+
+	//debug_con << (float)ok/(float)cptr*100.0 << "%" << "";
+
 }
 
 void Raven_Bot_Learner::Update() {
 
-	//saveData();
+	saveData();
 
 	Raven_Bot::Update();
 }
@@ -93,19 +127,17 @@ void Raven_Bot_Learner::saveData() {
 	data.push_back(Ammo);
 
 
-	ofstream dataFile;
-	dataFile.open("Data/LearningData.csv", std::ofstream::app);
 
 	for (auto it = data.begin(); it != data.end(); ++it) {
 		dataFile << std::fixed << std::setprecision(2) << *it;
 		if (std::next(it) != data.end())  dataFile << " ";		
 	}
 	dataFile << "\n";
-	dataFile.close();
 
 
 
 }
 Raven_Bot_Learner::~Raven_Bot_Learner(){
+	dataFile.close();
 
 }
