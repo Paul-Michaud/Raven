@@ -104,12 +104,11 @@ class Perceptron
    * Taken from StackOverflow:
    * http://stackoverflow.com/questions/13314098/get-the-dot-product-of-two-vectors-by-functors-and-stl-algorithms
    */
-  double dot_product(const std::vector<double> &v1,
-                     const std::vector<double> &v2)
+  double dot_product(const std::vector<double> &v1, const std::vector<double> &v2)
   {
       return std::inner_product(v1.begin(), v1.end(), v2.begin(), 0);
   }
-
+  
 };
 
 #endif // PERCEPTRON_HPP

@@ -19,6 +19,8 @@ public:
 	void		saveData();
 	ofstream	dataFile;
 
+	void trainPerceptron();
+	void testPerceptron();
 
 	~Raven_Bot_Learner();
 

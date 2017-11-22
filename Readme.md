@@ -23,5 +23,8 @@ Contient le code source du TP ainsi que l'exécutable
 	
 a)création class raven_bot_learner
 b)besoin de savoir quand un bot a tiré ou a voulu tiré -> création d'un membre de raven_bot 
-qu'on met a true quand on a voulu tiré, il sera remit à false quand le learner aura aprris de ce cas la
-c)a chaque (?) update du learner on sauvegarde les infos des autres bots (VITESSE DISTTOTARGET  AMMO TIMEVISIBLE HASFIRED)
+qu'on met a true quand on a voulu tiré, il sera remit à false quand le learner aura aprit de ce cas la
+c)a chaque (?) update du learner on sauvegarde les infos des/d'un autres bots (VITESSE DISTTOTARGET  AMMO TIMEVISIBLE HASFIRED)
+d)dans le constructeur de rbl (raven bot learner) on créé un jeu de donnée d'apprentissage en fonction des données sauvegardés au préalable
+e)instanciation du perceptron + création du model ds le cstr
+f)test du model avec un autre jeu de donné  ds le cstr
