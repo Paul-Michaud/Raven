@@ -113,6 +113,18 @@ void Trigger_WeaponGiver::Render()
       
         break;
 
+	  case type_flamethrower:
+	  {
+
+		  gdi->OrangeBrush();
+		  gdi->RedPen();
+		  const double sz = 3.0;
+		  gdi->Circle(Pos().x - sz, Pos().y, sz);
+		  gdi->Circle(Pos().x + sz, Pos().y, sz);
+	  }
+
+	  break;
+
     }//end switch
   }
 }

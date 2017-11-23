@@ -70,6 +70,8 @@ void GetWeaponGoal_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
     s="RL: "; break;
   case type_shotgun:
     s="SG: "; break;
+  case type_flamethrower:
+	  s = "FT: "; break;
   }
   
   gdi->TextAtPos(Position, s + ttos(CalculateDesirability(pBot), 2));

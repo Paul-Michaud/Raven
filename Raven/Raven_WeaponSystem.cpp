@@ -3,6 +3,7 @@
 #include "armory/Weapon_RailGun.h"
 #include "armory/Weapon_ShotGun.h"
 #include "armory/Weapon_Blaster.h"
+#include "armory/FlameThrower.h"
 #include "Raven_Bot.h"
 #include "misc/utils.h"
 #include "lua/Raven_Scriptor.h"
@@ -55,12 +56,13 @@ void Raven_WeaponSystem::Initialize()
   m_WeaponMap.clear();
 
   //set up the container
-  m_pCurrentWeapon = new Blaster(m_pOwner);
+  m_pCurrentWeapon = new FlameThrower(m_pOwner);
 
-  m_WeaponMap[type_blaster]         = m_pCurrentWeapon;
+  m_WeaponMap[type_blaster]         = 0;
   m_WeaponMap[type_shotgun]         = 0;
   m_WeaponMap[type_rail_gun]        = 0;
   m_WeaponMap[type_rocket_launcher] = 0;
+  m_WeaponMap[type_flamethrower] = m_pCurrentWeapon;
 }
 
 //-------------------------------- SelectWeapon -------------------------------
@@ -102,7 +104,7 @@ void Raven_WeaponSystem::SelectWeapon()
 
   else
   {
-    m_pCurrentWeapon = m_WeaponMap[type_blaster];
+    m_pCurrentWeapon = m_WeaponMap[type_flamethrower];
   }
 }
 
@@ -131,6 +133,10 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
   case type_rocket_launcher:
 
     w = new RocketLauncher(m_pOwner); break;
+
+  case type_flamethrower:
+
+	  w = new FlameThrower(m_pOwner); break;
 
   }//end switch
   

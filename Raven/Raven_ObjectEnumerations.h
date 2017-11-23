@@ -15,6 +15,7 @@ enum
   type_rail_gun,
   type_rocket_launcher,
   type_shotgun,
+  type_flamethrower,
   type_blaster,
   type_obstacle,
   type_sliding_door,
@@ -64,6 +65,10 @@ inline std::string GetNameOfType(int w)
   case type_shotgun:
     
     s =  "shotgun"; break;
+
+  case type_flamethrower:
+
+	  s = "Flamethrower";  break;
 
   case type_unused:
     
