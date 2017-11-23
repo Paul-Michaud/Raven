@@ -78,6 +78,8 @@ public:
   //from Raven_Bot::Update)
   bool          TakeAimAndShoot()const;
 
+  void TakeAimAndShootLearner(bool shoot)const;
+
   //this method determines the most appropriate weapon to use given the current
   //game state. (Called every n update-steps from Raven_Bot::Update)
   void          SelectWeapon();

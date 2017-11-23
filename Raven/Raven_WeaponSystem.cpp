@@ -235,6 +235,38 @@ bool Raven_WeaponSystem::TakeAimAndShoot()const
   return false;
 }
 
+//--------------------------- TakeAimAndShootLearner ---------------------------------
+//
+//-----------------------------------------------------------------------------
+void Raven_WeaponSystem::TakeAimAndShootLearner(bool shoot)const
+{
+	if (m_pOwner->GetTargetSys()->GetTarget()) {
+		Vector2D AimingPos = m_pOwner->GetTargetBot()->Pos();
+
+		if (GetCurrentWeapon()->GetType() == type_rocket_launcher || GetCurrentWeapon()->GetType() == type_blaster) {
+			AimingPos = PredictFuturePositionOfTarget();
+
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) && (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+				m_dReactionTime) && m_pOwner->hasLOSto(AimingPos)) {
+
+				AddNoiseToAim(AimingPos);
+				if (shoot) GetCurrentWeapon()->ShootAt(AimingPos);
+			}
+		}
+
+		else {
+
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) && (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() > m_dReactionTime)) {
+				AddNoiseToAim(AimingPos);
+				if (shoot) GetCurrentWeapon()->ShootAt(AimingPos);
+			}
+		}
+	} else {
+		m_pOwner->RotateFacingTowardPosition(m_pOwner->Pos() + m_pOwner->Heading());
+	}
+}
+
+
 //---------------------------- AddNoiseToAim ----------------------------------
 //
 //  adds a random deviation to the firing angle not greater than m_dAimAccuracy 

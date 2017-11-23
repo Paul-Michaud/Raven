@@ -167,7 +167,6 @@ void Raven_Bot::Update()
 	else {
 		//We don't set hasFired status to false here because we want to make sure that
 		//the bot has learn the case, so it'll be set as false by the learner bot
-
 	}
 
   }

@@ -2,24 +2,79 @@
 #include <iostream>
 #include <vector>
 
-
 using namespace std;
-
-
 
 Raven_Bot_Learner::Raven_Bot_Learner(Raven_Game* world, Vector2D pos, std::list<Raven_Bot*> &bots):Raven_Bot(world, pos), m_Bots(bots) {
 	dataFile.open("Data/LearningData.csv", std::ofstream::app);
 
 	trainPerceptron();
+
 	testPerceptron(); 
 
 }
 
 void Raven_Bot_Learner::Update() {
 
-	//saveData();
+	//process the currently active goal. Note this is required even if the bot
+	//is under user control. This is because a goal is created whenever a user 
+	//clicks on an area of the map that necessitates a path planning request.
+	m_pBrain->Process();
+	
+	//Calculate the steering force and update the bot's velocity and position
+	UpdateMovement();
 
-	Raven_Bot::Update();
+	//if the bot is under AI control but not scripted
+	if (!isPossessed())
+	{
+		//examine all the opponents in the bots sensory memory and select one
+		//to be the current target
+		if (m_pTargetSelectionRegulator->isReady())
+		{
+			m_pTargSys->Update();
+		}
+
+		//appraise and arbitrate between all possible high level goals
+		if (m_pGoalArbitrationRegulator->isReady())
+		{
+			m_pBrain->Arbitrate();
+		}
+
+		//update the sensory memory with any visual stimulus
+		if (m_pVisionUpdateRegulator->isReady())
+		{
+			m_pSensoryMem->UpdateVision();
+		}
+
+		//select the appropriate weapon to use from the weapons currently in
+		//the inventory
+		if (m_pWeaponSelectionRegulator->isReady())
+		{
+			m_pWeaponSys->SelectWeapon();
+		}
+
+
+		double DistToTarget = 0;
+		double TimeTargetHasBeenVisible = 0;
+
+		if (this->GetTargetSys()->GetTarget()) {
+			DistToTarget = Vec2DDistance(this->Pos(), m_pTargSys->GetTarget()->Pos());
+			TimeTargetHasBeenVisible = m_pTargSys->GetTimeTargetHasBeenVisible();
+		}
+
+		double Velocity = this->Speed();
+
+		double WeaponType = m_pWeaponSys->GetCurrentWeapon()->GetType();
+
+		double Ammo = m_pWeaponSys->GetAmmoRemainingForWeapon(WeaponType);
+
+		bool result = (*perceptron).get_result({ DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo });
+
+			
+		m_pWeaponSys->TakeAimAndShootLearner(result);
+
+	}
+
+	saveData();
 }
 
 void Raven_Bot_Learner::saveData() {
@@ -63,6 +118,7 @@ void Raven_Bot_Learner::saveData() {
 		dataFile << std::fixed << std::setprecision(2) << *it;
 		if (std::next(it) != dataToSave.end())  dataFile << " ";
 	}
+
 	dataFile << "\n";
 	
 }
@@ -165,6 +221,71 @@ void Raven_Bot_Learner::testPerceptron() {
 	}
 
 }
+
+//--------------------------- Render -------------------------------------
+//
+//------------------------------------------------------------------------
+void Raven_Bot_Learner::Render()
+{
+	//when a bot is hit by a projectile this value is set to a constant user
+	//defined value which dictates how long the bot should have a thick red
+	//circle drawn around it (to indicate it's been hit) The circle is drawn
+	//as long as this value is positive. (see Render)
+	m_iNumUpdatesHitPersistant--;
+
+
+	if (isDead() || isSpawning()) return;
+
+	gdi->BluePen();
+
+	m_vecBotVBTrans = WorldTransform(m_vecBotVB,
+		Pos(),
+		Facing(),
+		Facing().Perp(),
+		Scale());
+
+	gdi->ClosedShape(m_vecBotVBTrans);
+
+	//draw the head
+	gdi->BrownBrush();
+	gdi->Circle(Pos(), 6.0 * Scale().x);
+
+
+	//render the bot's weapon
+	m_pWeaponSys->RenderCurrentWeapon();
+
+	//render a thick red circle if the bot gets hit by a weapon
+	if (m_bHit)
+	{
+		gdi->ThickRedPen();
+		gdi->HollowBrush();
+		gdi->Circle(m_vPosition, BRadius() + 1);
+
+		if (m_iNumUpdatesHitPersistant <= 0)
+		{
+			m_bHit = false;
+		}
+	}
+	gdi->TextAtPos(Pos().x-15, Pos().y+15, "Learner");
+	gdi->TransparentText();
+	gdi->TextColor(0, 255, 0);
+
+	if (UserOptions->m_bShowBotIDs)
+	{
+		gdi->TextAtPos(Pos().x - 10, Pos().y - 20, ttos(ID()));
+	}
+
+	if (UserOptions->m_bShowBotHealth)
+	{
+		gdi->TextAtPos(Pos().x - 40, Pos().y - 5, "H:" + ttos(Health()));
+	}
+
+	if (UserOptions->m_bShowScore)
+	{
+		gdi->TextAtPos(Pos().x - 40, Pos().y + 10, "Scr:" + ttos(Score()));
+	}
+}
+
 Raven_Bot_Learner::~Raven_Bot_Learner(){
 	dataFile.close();
 

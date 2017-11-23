@@ -17,7 +17,6 @@
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
 
-
 class Raven_PathPlanner;
 class Raven_Steering;
 class Raven_Game;
@@ -34,11 +33,11 @@ class Raven_SensoryMemory;
 
 class Raven_Bot : public MovingEntity
 {
-private:
+protected:
 
   enum Status{alive, dead, spawning};
 
-private:
+protected:
 
   //alive, dead or spawning?
   Status                             m_Status;

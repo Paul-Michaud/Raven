@@ -6,6 +6,11 @@
 #include "debug/DebugConsole.h"
 #include <vector>
 #include "Perceptron.hpp"
+#include "goals/Goal_Think.h"
+#include "time/Regulator.h"
+#include "Raven_SensoryMemory.h"
+#include "Raven_UserOptions.h"
+
 
 
 using namespace std;
@@ -23,13 +28,12 @@ public:
 	void testPerceptron();
 
 	~Raven_Bot_Learner();
-
+	void Render();
 
 private:
 	Perceptron *perceptron;
 
 	std::list<Raven_Bot*> &m_Bots;
-
 
 };
 
