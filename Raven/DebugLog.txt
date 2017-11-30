@@ -75,6 +75,6 @@ Creating a rocket_launcher
 maps/Raven_DM1.map loaded okay
 Training set created
 Perceptron trained
-Model accuracy : 18.1946%
+Model accuracy : 82.0404%
 deleting raven bot (id = 401)
 deleting raven bot (id = 402)
