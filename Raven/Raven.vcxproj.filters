@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Game">
@@ -268,12 +268,17 @@
     <ClCompile Include="..\Common\misc\WindowUtils.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="armory\FlameThrower.cpp">
-      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    <ClCompile Include="Raven_Bot_Learner.cpp">
+	    <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="armory\Flame.cpp">
-      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
-    </ClCompile>
+    <ClCompile Include="armory\FlameThrower.cpp">	
+	    <ClCompile Include="Raven_Bot_Learner.cpp">
+      <Filter>Game\weapons &amp; projectiles\weapons</Filter>	
+      <Filter>Game</Filter>
+    </ClCompile>		
+    <ClCompile Include="armory\Flame.cpp">		
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>		
+    </ClCompile> 
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -612,12 +617,18 @@
     <ClInclude Include="..\Common\misc\WindowUtils.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="armory\FlameThrower.h">
-      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    <ClInclude Include="Raven_Bot_.h">
+      <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="armory\Flame.h">
-      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    <ClInclude Include="Perceptron.hpp" />
+    <ClInclude Include="TrainingItem.hpp" />
+    <ClInclude Include="armory\FlameThrower.h">	
+	    <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClInclude>
+    <ClInclude Include="armory\Flame.h">	
+	    <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
+    </ClInclude>
+
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

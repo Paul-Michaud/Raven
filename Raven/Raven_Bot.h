@@ -17,7 +17,6 @@
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
 
-
 class Raven_PathPlanner;
 class Raven_Steering;
 class Raven_Game;
@@ -34,11 +33,11 @@ class Raven_SensoryMemory;
 
 class Raven_Bot : public MovingEntity
 {
-private:
+protected:
 
   enum Status{alive, dead, spawning};
 
-private:
+protected:
 
   //alive, dead or spawning?
   Status                             m_Status;
@@ -105,6 +104,9 @@ private:
   //set to true when a human player takes over control of the bot
   bool                               m_bPossessed;
 
+  //set to true when the bot has tried to fire
+  bool								 m_bHasFired;
+
   //a vertex buffer containing the bot's geometry
   std::vector<Vector2D>              m_vecBotVB;
   //the buffer for the transformed vertices
@@ -156,10 +158,13 @@ public:
   bool          isDead()const{return m_Status == dead;}
   bool          isAlive()const{return m_Status == alive;}
   bool          isSpawning()const{return m_Status == spawning;}
+
+  bool			GetFiredStatus()const { return m_bHasFired;}
   
   void          SetSpawning(){m_Status = spawning;}
   void          SetDead(){m_Status = dead;}
   void          SetAlive(){m_Status = alive;}
+  void			SetFiredStatus(bool hasFired) { m_bHasFired = hasFired; }
 
   //returns a value indicating the time in seconds it will take the bot
   //to reach the given position at its current speed.
