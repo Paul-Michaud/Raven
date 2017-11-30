@@ -16,6 +16,7 @@
 #include "game/MovingEntity.h"
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
+#include "Team.h";
 
 class Raven_PathPlanner;
 class Raven_Steering;
@@ -111,6 +112,9 @@ protected:
   std::vector<Vector2D>              m_vecBotVB;
   //the buffer for the transformed vertices
   std::vector<Vector2D>              m_vecBotVBTrans;
+
+  //Belong team
+
 
 
   //bots shouldn't be copied, only created or respawned
