@@ -113,12 +113,12 @@ void FlameThrower::InitializeFuzzyModule()
 
 
 	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Loads), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay), VeryDesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Okay), Desirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Close, Ammo_Low), Desirable);
 
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads), Desirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay), Undesirable);
-	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low), Undesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Loads), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Okay), VeryDesirable);
+	m_FuzzyModule.AddRule(FzAND(Target_Medium, Ammo_Low), Desirable);
 
 	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Loads), Undesirable);
 	m_FuzzyModule.AddRule(FzAND(Target_Far, Ammo_Okay), Undesirable);
