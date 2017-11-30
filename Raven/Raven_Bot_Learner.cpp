@@ -236,7 +236,8 @@ void Raven_Bot_Learner::Render()
 
 	if (isDead() || isSpawning()) return;
 
-	gdi->BluePen();
+	if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
+	else gdi->BluePen();
 
 	m_vecBotVBTrans = WorldTransform(m_vecBotVB,
 		Pos(),
@@ -247,7 +248,8 @@ void Raven_Bot_Learner::Render()
 	gdi->ClosedShape(m_vecBotVBTrans);
 
 	//draw the head
-	gdi->BrownBrush();
+	if (m_pTeam != NULL) m_pTeam->setGdiBrushColor();
+	else gdi->BrownBrush();
 	gdi->Circle(Pos(), 6.0 * Scale().x);
 
 
@@ -266,7 +268,9 @@ void Raven_Bot_Learner::Render()
 			m_bHit = false;
 		}
 	}
-	gdi->TextAtPos(Pos().x-15, Pos().y+15, "Learner");
+
+	gdi->TextColor(85, 26, 139);
+	gdi->TextAtPos(Pos().x-25, Pos().y-25, "Learner");
 	gdi->TransparentText();
 	gdi->TextColor(0, 255, 0);
 

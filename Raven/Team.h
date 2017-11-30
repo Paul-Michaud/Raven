@@ -16,9 +16,9 @@ class Team {
 
 private:
 
-	std::list<Raven_Bot*> members;
-	Raven_Bot* leader;
-	Raven_Bot* target;
+	std::list<Raven_Bot*> m_members;
+	Raven_Bot* m_pLeader;
+	Raven_Bot* m_pTarget;
 
 	TeamColor m_eTeamColor;
 
@@ -39,8 +39,17 @@ public:
 	// Set team's color
 	void setTeamColor(TeamColor);
 
-	// Set gdi color depending team
-	void setGdiColor();
+	// Set gdi color depending team (Brush)
+	void setGdiBrushColor();
+
+	// Set gdi color depending team (Pen)
+	void setGdiPenColor();
+
+	//Check if team has an active leader
+	bool hasActiveLeader();
+
+	//Check if a bot is the leader
+	bool isLeader(Raven_Bot*);
 
 };
 

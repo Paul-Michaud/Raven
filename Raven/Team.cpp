@@ -8,13 +8,15 @@
 Team::Team(TeamColor teamColor){
 	
 	setTeamColor(teamColor);
+	m_pLeader = NULL;
+	m_pTarget = NULL;
 }
 
 //-----------------------
 // Add member to the team
 //-----------------------
 void Team::addMember(Raven_Bot* member){
-	members.push_back(member);
+	m_members.push_back(member);
 }
 
 //-----------------------
@@ -32,29 +34,62 @@ void Team::setTarget(Raven_Bot* target){
 }
 
 
-// Set gdi color depending team
+// Set gdi color depending team (Brush)
 //-----------------------
-void Team::setGdiColor() {
+void Team::setGdiBrushColor() {
 	
 	switch (m_eTeamColor){
 		case TeamColor::BLUE:
-			gdi->BluePen();
+			gdi->BlueBrush();
+			break;
+		case TeamColor::RED:
+			gdi->RedBrush();
 			break;
 		case TeamColor::GREEN:
-			gdi->GreenPen();
+			gdi->GreenBrush();
 			break;
 		case TeamColor::GREY:
-			gdi->GreyPen();
+			gdi->GreyBrush();
 			break;
-		case TeamColor::PINK:
-			gdi->PinkPen();
+		case TeamColor::YELLOW:
+			gdi->YellowBrush();
 			break;
 		case TeamColor::ORANGE:
-			gdi->OrangePen();
+			gdi->OrangeBrush();
 			break;
 		default:
-			gdi->BluePen();
+			gdi->BlueBrush();
 			break;
+	}
+
+}
+
+// Set gdi color depending team (Pen)
+//-----------------------
+void Team::setGdiPenColor() {
+
+	switch (m_eTeamColor) {
+	case TeamColor::BLUE:
+		gdi->BluePen();
+		break;
+	case TeamColor::RED:
+		gdi->RedPen();
+		break;
+	case TeamColor::GREEN:
+		gdi->GreenPen();
+		break;
+	case TeamColor::GREY:
+		gdi->GreyPen();
+		break;
+	case TeamColor::YELLOW:
+		gdi->YellowPen();
+		break;
+	case TeamColor::ORANGE:
+		gdi->OrangePen();
+		break;
+	default:
+		gdi->BluePen();
+		break;
 	}
 
 }
@@ -64,5 +99,18 @@ void Team::setGdiColor() {
 void Team::setTeamColor(TeamColor teamColor) {
 	m_eTeamColor = teamColor;
 }
+
+//Check if team has an active leader
+//----------------------------------
+bool Team::hasActiveLeader() {
+	return m_pLeader != NULL && ! m_pLeader->isDead() && ! m_pLeader->isSpawning();
+}
+
+//Check if a bot is the leader
+//----------------------------
+bool Team::isLeader(Raven_Bot* bot) {
+	return bot == m_pLeader;
+}
+
 
 

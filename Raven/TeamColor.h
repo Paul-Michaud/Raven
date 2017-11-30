@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------------
 
 
-enum class TeamColor { BLUE, RED, GREEN, GREY, PINK, ORANGE };
+enum class TeamColor { BLUE, RED, GREEN, GREY, YELLOW, ORANGE };
 
 
 #endif

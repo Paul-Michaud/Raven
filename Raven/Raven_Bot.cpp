@@ -519,7 +519,7 @@ void Raven_Bot::Render()
 
   if (isDead() || isSpawning()) return;
   
-  if (m_pTeam != NULL) m_pTeam->setGdiColor();
+  if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
   else gdi->BluePen();
   
   m_vecBotVBTrans = WorldTransform(m_vecBotVB,
@@ -531,7 +531,8 @@ void Raven_Bot::Render()
   gdi->ClosedShape(m_vecBotVBTrans);
   
   //draw the head
-  gdi->BrownBrush();
+  if (m_pTeam != NULL) m_pTeam->setGdiBrushColor();
+  else gdi->BrownBrush();
   gdi->Circle(Pos(), 6.0 * Scale().x);
 
 

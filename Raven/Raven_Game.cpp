@@ -102,8 +102,7 @@ void Raven_Game::Clear()
   m_pSelectedBot = NULL;
 
   //Delete teams
-  /*if(m_pBlueTeam != NULL) delete m_pBlueTeam;
-  if(m_pRedTeam != NULL) delete m_pRedTeam;*/
+  for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) delete *it;
 
 }
 
@@ -253,7 +252,11 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //-----------------------------------------------------------------------------
 void Raven_Game::AddBots(unsigned int NumBotsToAdd){
 
-  unsigned int startNumBotsToAdd = NumBotsToAdd;
+  m_teams.push_back(new Team(TeamColor::BLUE));
+  m_teams.push_back(new Team(TeamColor::ORANGE));
+  m_teams.push_back(new Team(TeamColor::GREEN));
+
+  std::list<Team*>::iterator teamIterator = m_teams.begin();
 
   while (NumBotsToAdd > 0){
     
@@ -264,8 +267,9 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd){
 	else rb = new Raven_Bot(this, Vector2D());
 
 	//Assign team
-	if (NumBotsToAdd >= startNumBotsToAdd / 2.0) rb->setTeamMembership(m_pBlueTeam);
-	else rb->setTeamMembership(m_pRedTeam);
+	rb->setTeamMembership(*teamIterator);
+	teamIterator++;
+	if(teamIterator == m_teams.end()) teamIterator = m_teams.begin();
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -283,6 +287,8 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd){
 	#endif
 
   }
+
+  teamIterator = m_teams.begin();
 
 }
 
@@ -414,9 +420,6 @@ bool Raven_Game::LoadMap(const std::string& filename)
 
   //load the new map data
   if (m_pMap->LoadMap(filename)){ 
-
-	m_pBlueTeam = new Team(TeamColor::BLUE);
-	m_pRedTeam = new Team(TeamColor::RED);
 
     AddBots(script->GetInt("NumBots"));
 

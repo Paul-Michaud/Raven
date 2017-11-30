@@ -69,8 +69,7 @@ private:
   GraveMarkers*                    m_pGraveMarkers;
 
   //teams
-  Team* m_pBlueTeam;
-  Team* m_pRedTeam;
+  std::list<Team*> m_teams;
 
   //this iterates through each trigger, testing each one against each bot
   void  UpdateTriggers();
