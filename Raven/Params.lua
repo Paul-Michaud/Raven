@@ -79,6 +79,7 @@ Bot_HealthGoalTweaker     = 1.0
 Bot_ShotgunGoalTweaker    = 1.0
 Bot_RailgunGoalTweaker    = 1.0
 Bot_RocketLauncherTweaker = 1.0
+Bot_FlamethrowerTweaker = 1.0
 Bot_AggroGoalTweaker      = 1.0
 
 
@@ -180,4 +181,16 @@ Pellet_Persistance = 0.1
 Pellet_Damage      = 1
 
 
-  
+FlameThrower_FiringFreq       = 10
+FlameThrower_DefaultRounds      = 75
+FlameThrower_MaxRoundsCarried = 3000
+FlameThrower_Spread           = 0.05
+FlameThrower_IdealRange  = 100
+FlameThrower_SoundRange  = 100
+
+Flame_MaxSpeed    = 5000
+Flame_Mass        = 0.1
+Flame_MaxForce    = 1000.0
+Flame_Scale       = Bot_Scale
+Flame_Persistance = 0.1
+Flame_Damage      = 5
