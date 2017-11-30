@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 NavGraph for maps/Raven_DM1.map loaded okay
 Average edge length is 23.7036
 Neighborhood range set to 24.7036
@@ -78,3 +79,5 @@ Perceptron trained
 Model accuracy : 82.0404%
 deleting raven bot (id = 401)
 deleting raven bot (id = 402)
+=======
+>>>>>>> 120175fad33f254fd36a0c90453b5d2888e92054
