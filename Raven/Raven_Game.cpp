@@ -563,9 +563,9 @@ void Raven_Game::ChangeWeaponOfPossessedBot(unsigned int weapon)const
       
       PossessedBot()->ChangeWeapon(type_rail_gun); return;
 
-	case type_flamethrower:
+	case type_submachine_gun:
 
-		PossessedBot()->ChangeWeapon(type_flamethrower); return;
+		PossessedBot()->ChangeWeapon(type_submachine_gun); return;
     }
   }
 }

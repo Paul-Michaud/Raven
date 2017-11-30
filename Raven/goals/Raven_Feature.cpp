@@ -48,7 +48,7 @@ double GetMaxRoundsBotCanCarryForWeapon(int WeaponType)
 
     return script->GetDouble("ShotGun_MaxRoundsCarried");
 
-  case type_flamethrower:
+  case type_submachine_gun:
 
 	  return script->GetDouble("FlameThrower_MaxRoundsCarried");
 
@@ -86,13 +86,13 @@ double Raven_Feature::TotalWeaponStrength(Raven_Bot* pBot)
   const double MaxRoundsForShotgun = GetMaxRoundsBotCanCarryForWeapon(type_shotgun);
   const double MaxRoundsForRailgun = GetMaxRoundsBotCanCarryForWeapon(type_rail_gun);
   const double MaxRoundsForRocketLauncher = GetMaxRoundsBotCanCarryForWeapon(type_rocket_launcher);
-  const double MaxRoundsForFlamethrower = GetMaxRoundsBotCanCarryForWeapon(type_flamethrower);
+  const double MaxRoundsForFlamethrower = GetMaxRoundsBotCanCarryForWeapon(type_submachine_gun);
   const double TotalRoundsCarryable = MaxRoundsForShotgun + MaxRoundsForRailgun + MaxRoundsForRocketLauncher + MaxRoundsForFlamethrower;
 
   double NumSlugs      = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_rail_gun);
   double NumCartridges = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_shotgun);
   double NumRockets    = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_rocket_launcher);
-  double NumFlame = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_flamethrower);
+  double NumFlame = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_submachine_gun);
   //the value of the tweaker (must be in the range 0-1) indicates how much
   //desirability value is returned even if a bot has not picked up any weapons.
   //(it basically adds in an amount for a bot's persistent weapon -- the blaster)

@@ -62,7 +62,7 @@ void Raven_WeaponSystem::Initialize()
   m_WeaponMap[type_shotgun]         = 0;
   m_WeaponMap[type_rail_gun]        = 0;
   m_WeaponMap[type_rocket_launcher] = 0;
-  m_WeaponMap[type_flamethrower] = m_pCurrentWeapon;
+  m_WeaponMap[type_submachine_gun] = m_pCurrentWeapon;
 }
 
 //-------------------------------- SelectWeapon -------------------------------
@@ -104,7 +104,7 @@ void Raven_WeaponSystem::SelectWeapon()
 
   else
   {
-    m_pCurrentWeapon = m_WeaponMap[type_flamethrower];
+    m_pCurrentWeapon = m_WeaponMap[type_submachine_gun];
   }
 }
 
@@ -134,7 +134,7 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
 
     w = new RocketLauncher(m_pOwner); break;
 
-  case type_flamethrower:
+  case type_submachine_gun:
 
 	  w = new FlameThrower(m_pOwner); break;
 

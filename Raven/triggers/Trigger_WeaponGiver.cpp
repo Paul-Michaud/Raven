@@ -113,7 +113,7 @@ void Trigger_WeaponGiver::Render()
       
         break;
 
-	  case type_flamethrower:
+	  case type_submachine_gun:
 	  {
 
 		  gdi->OrangeBrush();

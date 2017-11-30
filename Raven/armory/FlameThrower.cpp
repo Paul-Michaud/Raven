@@ -9,7 +9,7 @@
 
 FlameThrower::FlameThrower(Raven_Bot * owner):
 
-Raven_Weapon(type_flamethrower,
+Raven_Weapon(type_submachine_gun,
 	script->GetInt("FlameThrower_DefaultRounds"),
 	script->GetInt("FlameThrower_MaxRoundsCarried"),
 	script->GetDouble("FlameThrower_FiringFreq"),

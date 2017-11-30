@@ -46,7 +46,7 @@ Goal_Think::Goal_Think(Raven_Bot* pBot):Goal_Composite<Raven_Bot>(pBot, goal_thi
   m_Evaluators.push_back(new GetWeaponGoal_Evaluator(RocketLauncherBias,
                                                      type_rocket_launcher));
   m_Evaluators.push_back(new GetWeaponGoal_Evaluator(FlameThrowerBias,
-	  type_flamethrower));
+	  type_submachine_gun));
 
 }
 

@@ -70,7 +70,7 @@ void GetWeaponGoal_Evaluator::RenderInfo(Vector2D Position, Raven_Bot* pBot)
     s="RL: "; break;
   case type_shotgun:
     s="SG: "; break;
-  case type_flamethrower:
+  case type_submachine_gun:
 	  s = "FT: "; break;
   }
   
