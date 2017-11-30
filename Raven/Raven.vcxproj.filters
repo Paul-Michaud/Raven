@@ -617,6 +617,12 @@
     <ClInclude Include="Team.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Raven_Bot.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamColor.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

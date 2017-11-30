@@ -542,7 +542,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TeamColor.h" />
     <ClInclude Include="Perceptron.hpp" />
+    <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Bot_Learner.h" />
     <ClInclude Include="Raven_Game.h" />
     <ClInclude Include="Raven_Map.h" />

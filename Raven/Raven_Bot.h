@@ -28,6 +28,7 @@ class Raven_Bot;
 class Goal_Think;
 class Raven_WeaponSystem;
 class Raven_SensoryMemory;
+class Team;
 
 
 
@@ -113,8 +114,8 @@ protected:
   //the buffer for the transformed vertices
   std::vector<Vector2D>              m_vecBotVBTrans;
 
-  //Belong team
-
+  //Team's membership
+  Team* m_pTeam;
 
 
   //bots shouldn't be copied, only created or respawned
@@ -224,6 +225,9 @@ public:
   Raven_Bot* const                   GetTargetBot()const{return m_pTargSys->GetTarget();}
   Raven_WeaponSystem* const          GetWeaponSys()const{return m_pWeaponSys;}
   Raven_SensoryMemory* const         GetSensoryMem()const{return m_pSensoryMem;}
+
+  //Set team's membership
+  void setTeamMembership(Team* team) { m_pTeam = team; }
 
 
 };

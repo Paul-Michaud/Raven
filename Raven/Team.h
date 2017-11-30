@@ -3,15 +3,13 @@
 #pragma warning (disable:4786)
 //-----------------------------------------------------------------------------
 //
-//  Name:   Raven_Bot.h
-//
-//  Author: Mat Buckland (www.ai-junkie.com)
+//  Name:   Team.h
 //
 //  Desc:
 //-----------------------------------------------------------------------------
 
 #include "Raven_Bot.h"
-
+#include "TeamColor.h"
 
 
 class Team {
@@ -22,10 +20,12 @@ private:
 	Raven_Bot* leader;
 	Raven_Bot* target;
 
+	TeamColor m_eTeamColor;
+
 public:
 
 	//Constructor
-	Team();
+	Team(TeamColor teamColor);
 
 	//Add member to the team
 	void addMember(Raven_Bot*);
@@ -36,7 +36,11 @@ public:
 	//Assign a new leader for the team
 	void setTarget(Raven_Bot*);
 
-	//void setGdiContext()
+	// Set team's color
+	void setTeamColor(TeamColor);
+
+	// Set gdi color depending team
+	void setGdiColor();
 
 };
 

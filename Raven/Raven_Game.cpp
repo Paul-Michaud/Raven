@@ -28,6 +28,8 @@
 
 #include "debug/DebugConsole.h"
 
+#include "TeamColor.h"
+
 
 
 //uncomment to write object creation/deletion to debug console
@@ -99,6 +101,9 @@ void Raven_Game::Clear()
 
   m_pSelectedBot = NULL;
 
+  //Delete teams
+  /*if(m_pBlueTeam != NULL) delete m_pBlueTeam;
+  if(m_pRedTeam != NULL) delete m_pRedTeam;*/
 
 }
 
@@ -246,13 +251,21 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //
 //  Adds a bot and switches on the default steering behavior
 //-----------------------------------------------------------------------------
-void Raven_Game::AddBots(unsigned int NumBotsToAdd)
-{ 
-  while (NumBotsToAdd--)
-  {
-    //create a bot. (its position is irrelevant at this point because it will
+void Raven_Game::AddBots(unsigned int NumBotsToAdd){
+
+  unsigned int startNumBotsToAdd = NumBotsToAdd;
+
+  while (NumBotsToAdd > 0){
+    
+	//create a bot. (its position is irrelevant at this point because it will
     //not be rendered until it is spawned)
-    Raven_Bot* rb = new Raven_Bot(this, Vector2D());
+	Raven_Bot* rb = NULL;
+	if(NumBotsToAdd == 1) rb = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
+	else rb = new Raven_Bot(this, Vector2D());
+
+	//Assign team
+	if (NumBotsToAdd >= startNumBotsToAdd / 2.0) rb->setTeamMembership(m_pBlueTeam);
+	else rb->setTeamMembership(m_pRedTeam);
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -263,11 +276,14 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
     //register the bot with the entity manager
     EntityMgr->RegisterEntity(rb);
 
+	NumBotsToAdd--;
     
-#ifdef LOG_CREATIONAL_STUFF
-  debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
-#endif
+	#ifdef LOG_CREATIONAL_STUFF
+	  debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
+	#endif
+
   }
+
 }
 
 //---------------------------- NotifyAllBotsOfRemoval -------------------------
@@ -397,16 +413,21 @@ bool Raven_Game::LoadMap(const std::string& filename)
 
 
   //load the new map data
-  if (m_pMap->LoadMap(filename))
-  { 
+  if (m_pMap->LoadMap(filename)){ 
+
+	m_pBlueTeam = new Team(TeamColor::BLUE);
+	m_pRedTeam = new Team(TeamColor::RED);
+
     AddBots(script->GetInt("NumBots"));
 
-	//Create a learnerBot
+	// !!! MOVED IN AddBots
+	//---------------------
+	/*//Create a learnerBot
 	Raven_Bot_Learner* rbl = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
 	rbl->GetSteering()->WallAvoidanceOn();
 	rbl->GetSteering()->SeparationOn();
 	m_Bots.push_back(rbl);
-	EntityMgr->RegisterEntity(rbl);
+	EntityMgr->RegisterEntity(rbl);*/
   
     return true;
   }

@@ -26,6 +26,7 @@
 #include "Raven_Bot.h"
 #include "Raven_Bot_Learner.h"
 #include "navigation/pathmanager.h"
+#include "Team.h"
 
 
 class BaseGameEntity;
@@ -66,6 +67,10 @@ private:
   //when a bot is killed a "grave" is displayed for a few seconds. This
   //class manages the graves
   GraveMarkers*                    m_pGraveMarkers;
+
+  //teams
+  Team* m_pBlueTeam;
+  Team* m_pRedTeam;
 
   //this iterates through each trigger, testing each one against each bot
   void  UpdateTriggers();
