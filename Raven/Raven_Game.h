@@ -24,6 +24,7 @@
 #include "misc/utils.h"
 #include "game/EntityFunctionTemplates.h"
 #include "Raven_Bot.h"
+#include "Raven_Bot_Learner.h"
 #include "navigation/pathmanager.h"
 
 

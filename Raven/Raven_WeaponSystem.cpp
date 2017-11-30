@@ -230,7 +230,8 @@ void Raven_WeaponSystem::InitializeFuzzyModule(){
 //  this method aims the bots current weapon at the target (if there is a
 //  target) and, if aimed correctly, fires a round
 //-----------------------------------------------------------------------------
-void Raven_WeaponSystem::TakeAimAndShoot()
+bool Raven_WeaponSystem::TakeAimAndShoot()const
+
 {
   //aim the weapon only if the current target is shootable or if it has only
   //very recently gone out of view (this latter condition is to ensure the 
@@ -262,6 +263,7 @@ void Raven_WeaponSystem::TakeAimAndShoot()
         AddNoiseToAim(AimingPos);
 
         GetCurrentWeapon()->ShootAt(AimingPos);
+		return true;
       }
     }
 
@@ -277,9 +279,9 @@ void Raven_WeaponSystem::TakeAimAndShoot()
         AddNoiseToAim(AimingPos);
         
         GetCurrentWeapon()->ShootAt(AimingPos);
+		return true;
       }
     }
-
   }
   
   //no target to shoot at so rotate facing to be parallel with the bot's
@@ -288,7 +290,40 @@ void Raven_WeaponSystem::TakeAimAndShoot()
   {
     m_pOwner->RotateFacingTowardPosition(m_pOwner->Pos()+ m_pOwner->Heading());
   }
+  return false;
 }
+
+//--------------------------- TakeAimAndShootLearner ---------------------------------
+//
+//-----------------------------------------------------------------------------
+void Raven_WeaponSystem::TakeAimAndShootLearner(bool shoot)const
+{
+	if (m_pOwner->GetTargetSys()->GetTarget()) {
+		Vector2D AimingPos = m_pOwner->GetTargetBot()->Pos();
+
+		if (GetCurrentWeapon()->GetType() == type_rocket_launcher || GetCurrentWeapon()->GetType() == type_blaster) {
+			AimingPos = PredictFuturePositionOfTarget();
+
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) && (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() >
+				m_dReactionTime) && m_pOwner->hasLOSto(AimingPos)) {
+
+				AddNoiseToAim(AimingPos);
+				if (shoot) GetCurrentWeapon()->ShootAt(AimingPos);
+			}
+		}
+
+		else {
+
+			if (m_pOwner->RotateFacingTowardPosition(AimingPos) && (m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible() > m_dReactionTime)) {
+				AddNoiseToAim(AimingPos);
+				if (shoot) GetCurrentWeapon()->ShootAt(AimingPos);
+			}
+		}
+	} else {
+		m_pOwner->RotateFacingTowardPosition(m_pOwner->Pos() + m_pOwner->Heading());
+	}
+}
+
 
 //---------------------------- AddNoiseToAim ----------------------------------
 //

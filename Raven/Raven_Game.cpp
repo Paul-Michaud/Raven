@@ -395,14 +395,21 @@ bool Raven_Game::LoadMap(const std::string& filename)
   EntityMgr->Reset();
 
 
+
   //load the new map data
   if (m_pMap->LoadMap(filename))
   { 
     AddBots(script->GetInt("NumBots"));
+
+	//Create a learnerBot
+	Raven_Bot_Learner* rbl = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
+	rbl->GetSteering()->WallAvoidanceOn();
+	rbl->GetSteering()->SeparationOn();
+	m_Bots.push_back(rbl);
+	EntityMgr->RegisterEntity(rbl);
   
     return true;
   }
-
   return false;
 }
 
