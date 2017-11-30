@@ -230,7 +230,7 @@ void Raven_WeaponSystem::InitializeFuzzyModule(){
 //  this method aims the bots current weapon at the target (if there is a
 //  target) and, if aimed correctly, fires a round
 //-----------------------------------------------------------------------------
-bool Raven_WeaponSystem::TakeAimAndShoot()const
+bool Raven_WeaponSystem::TakeAimAndShoot()
 
 {
   //aim the weapon only if the current target is shootable or if it has only
@@ -296,7 +296,7 @@ bool Raven_WeaponSystem::TakeAimAndShoot()const
 //--------------------------- TakeAimAndShootLearner ---------------------------------
 //
 //-----------------------------------------------------------------------------
-void Raven_WeaponSystem::TakeAimAndShootLearner(bool shoot)const
+void Raven_WeaponSystem::TakeAimAndShootLearner(bool shoot)
 {
 	if (m_pOwner->GetTargetSys()->GetTarget()) {
 		Vector2D AimingPos = m_pOwner->GetTargetBot()->Pos();
