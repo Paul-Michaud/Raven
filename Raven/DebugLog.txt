@@ -1,6 +1,6 @@
 NavGraph for maps/Raven_DM1.map loaded okay
-Average edge length is 23.7036
-Neighborhood range set to 24.7036
+Average edge length is 23.6784
+Neighborhood range set to 24.6784
 Partitioning navgraph nodes...
 Loading map...
 Creating a Wall
@@ -70,8 +70,11 @@ Creating a Health
 Creating a rocket_launcher
 Creating a Railgun
 Creating a shotgun
+Creating a shotgun
+Creating a rocket_launcher
+Creating a Flamethrower
 Creating a Flamethrower
 maps/Raven_DM1.map loaded okay
-deleting raven bot (id = 400)
-deleting raven bot (id = 401)
-deleting raven bot (id = 402)
+deleting raven bot (id = 1073)
+deleting raven bot (id = 1074)
+deleting raven bot (id = 1075)
