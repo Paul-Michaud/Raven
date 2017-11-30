@@ -9,6 +9,7 @@
 #include "Raven_Game.h"
 #include "Raven_UserOptions.h"
 #include "2D/transformations.h"
+#include "fuzzy/FuzzyOperators.h"
 
 
 
@@ -23,6 +24,9 @@ Raven_WeaponSystem::Raven_WeaponSystem(Raven_Bot* owner,
                                                           m_dAimPersistance(AimPersistance)
 {
   Initialize();
+
+  //setup the fuzzy module
+  InitializeFuzzyModule();
 }
 
 //------------------------- dtor ----------------------------------------------
@@ -168,12 +172,66 @@ void Raven_WeaponSystem::ChangeWeapon(unsigned int type)
   if (w) m_pCurrentWeapon = w;
 }
 
+
+//-------------------------  InitializeFuzzyModule ----------------------------
+//
+//  set up some fuzzy variables and rules
+//-----------------------------------------------------------------------------
+void Raven_WeaponSystem::InitializeFuzzyModule(){
+
+	//Ensembles variables flous
+
+	FuzzyVariable& DistToTarget = m_FuzzyModule.CreateFLV("DistToTarget");
+	FzSet& Target_Close = DistToTarget.AddLeftShoulderSet("Target_Close", 0, 25, 150);
+	FzSet& Target_Medium = DistToTarget.AddTriangularSet("Target_Medium", 25, 150, 300);
+	FzSet& Target_Far = DistToTarget.AddRightShoulderSet("Target_Far", 150, 300, 1000);
+
+	double maxVelocity = m_pOwner->MaxSpeed();
+	FuzzyVariable& Velocity = m_FuzzyModule.CreateFLV("Velocity");
+	FzSet& Velocity_Slow = Velocity.AddLeftShoulderSet("Velocity_Slow", 0, maxVelocity*(1 / 3.0), maxVelocity*(2 / 3.0));
+	FzSet& Velocity_Medium = Velocity.AddLeftShoulderSet("Velocity_Medium", maxVelocity*(1 / 3.0), maxVelocity*(2 / 3.0), maxVelocity);
+	FzSet& Velocity_Fast = Velocity.AddRightShoulderSet("Velocity_Fast", maxVelocity*(2 / 3.0), maxVelocity, maxVelocity *2);
+	
+	FuzzyVariable& TimeTargetHasBeenVisible = m_FuzzyModule.CreateFLV("TimeTargetHasBeenVisible");
+	FzSet& TimeTargetHasBeenVisible_Short = TimeTargetHasBeenVisible.AddLeftShoulderSet("TimeTargetHasBeenVisible_Short", 0, m_dReactionTime*2, m_dReactionTime*5);
+	FzSet& TimeTargetHasBeenVisible_Ok = TimeTargetHasBeenVisible.AddRightShoulderSet("TimeTargetHasBeenVisible_Ok", m_dReactionTime*2, m_dReactionTime*5, 600);
+	
+	FuzzyVariable& Accuracy = m_FuzzyModule.CreateFLV("Accuracy"); //ratio 0-1
+	FzSet& NoPrecision = Accuracy.AddLeftShoulderSet("NoPrecision", 0, 0.25, 0.50);
+	FzSet& LittlePrecision = Accuracy.AddTriangularSet("LittlePrecision", 0.25, 0.50, 0.75);
+	FzSet& GoodPrecision = Accuracy.AddRightShoulderSet("GoodPrecision", 0.50, 0.75, 1.0);
+
+	
+	//Regles
+
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Slow, Target_Close)), GoodPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Slow, Target_Medium)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Slow, Target_Far)), NoPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Medium, Target_Close)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Medium, Target_Medium)), NoPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Medium, Target_Far)), NoPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Fast, Target_Close)), NoPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Fast, Target_Medium)), NoPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Short, FzAND(Velocity_Fast, Target_Far)), NoPrecision);
+
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Slow, Target_Close)), GoodPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Slow, Target_Medium)), GoodPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Slow, Target_Far)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Medium, Target_Close)), GoodPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Medium, Target_Medium)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Medium, Target_Far)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Fast, Target_Close)), GoodPrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Fast, Target_Medium)), LittlePrecision);
+	m_FuzzyModule.AddRule(FzAND(TimeTargetHasBeenVisible_Ok, FzAND(Velocity_Fast, Target_Far)), NoPrecision);
+}
+
 //--------------------------- TakeAimAndShoot ---------------------------------
 //
 //  this method aims the bots current weapon at the target (if there is a
 //  target) and, if aimed correctly, fires a round
 //-----------------------------------------------------------------------------
 bool Raven_WeaponSystem::TakeAimAndShoot()const
+
 {
   //aim the weapon only if the current target is shootable or if it has only
   //very recently gone out of view (this latter condition is to ensure the 
@@ -272,11 +330,31 @@ void Raven_WeaponSystem::TakeAimAndShootLearner(bool shoot)const
 //  adds a random deviation to the firing angle not greater than m_dAimAccuracy 
 //  rads
 //-----------------------------------------------------------------------------
-void Raven_WeaponSystem::AddNoiseToAim(Vector2D& AimingPos)const
+void Raven_WeaponSystem::AddNoiseToAim(Vector2D& AimingPos)
 {
+  /*------------------------------*/
+  /* GET PRECISION BY FUZZY LOGIC */
+  /*------------------------------*/
+  double precision = 0.0;
+
+  //If bot has a target
+  if (m_pOwner->GetTargetSys()->GetTarget()) {
+
+    double DistToTarget = Vec2DDistance(m_pOwner->Pos(), m_pOwner->GetTargetSys()->GetTarget()->Pos());
+
+    //fuzzify distance, velocity and timeTargetHasBeenVisible
+    m_FuzzyModule.Fuzzify("DistToTarget", DistToTarget);
+    m_FuzzyModule.Fuzzify("Velocity", m_pOwner->Speed());
+	m_FuzzyModule.Fuzzify("TimeTargetHasBeenVisible", m_pOwner->GetTargetSys()->GetTimeTargetHasBeenVisible());
+
+	precision = m_FuzzyModule.DeFuzzify("Accuracy", FuzzyModule::max_av);
+  }
+
   Vector2D toPos = AimingPos - m_pOwner->Pos();
 
-  Vec2DRotateAroundOrigin(toPos, RandInRange(-m_dAimAccuracy, m_dAimAccuracy));
+  //m_dAimAccuracy is weighted by the fuzzy precision
+  double fuzzyAccuracy = (1-precision)*m_dAimAccuracy;
+  Vec2DRotateAroundOrigin(toPos, RandInRange(-fuzzyAccuracy, fuzzyAccuracy));
 
   AimingPos = toPos + m_pOwner->Pos();
 }
