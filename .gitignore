@@ -19,5 +19,5 @@ Release/
 Backup*/
 .vs/
 
-Raven/Data/*
+Raven/Data/
 Raven/DebugLog.txt

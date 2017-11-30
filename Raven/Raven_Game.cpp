@@ -148,6 +148,11 @@ void Raven_Game::Update()
       curW = m_Projectiles.erase(curW);
     }   
   }
+
+  //update teams
+  for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
+	  if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
+  }
   
   //update the bots
   bool bSpawnPossible = true;
@@ -250,29 +255,19 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //
 //  Adds a bot and switches on the default steering behavior
 //-----------------------------------------------------------------------------
-void Raven_Game::AddBots(unsigned int NumBotsToAdd){
-
-  m_teams.push_back(new Team(TeamColor::BLUE));
-  m_teams.push_back(new Team(TeamColor::ORANGE));
-  m_teams.push_back(new Team(TeamColor::GREEN));
-
-  std::list<Team*>::iterator teamIterator = m_teams.begin();
+void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool addBotLearnerAtTheEnd){
 
   while (NumBotsToAdd > 0){
     
 	//create a bot. (its position is irrelevant at this point because it will
     //not be rendered until it is spawned)
 	Raven_Bot* rb = NULL;
-	if(NumBotsToAdd == 1) rb = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
+	if(addBotLearnerAtTheEnd && NumBotsToAdd == 1) rb = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
 	else rb = new Raven_Bot(this, Vector2D());
 
-	//Assign team to the bot
-	rb->setTeamMembership(*teamIterator);
-	//Bot is the team's leader
-	(*teamIterator)->setLeader(rb);
-	
-	teamIterator++;
-	if(teamIterator == m_teams.end()) teamIterator = m_teams.begin();
+	//Assign bot to a team
+	Team* team = GetUnderstaffingTeam();
+	team->addMember(rb);
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -290,8 +285,6 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd){
 	#endif
 
   }
-
-  teamIterator = m_teams.begin();
 
 }
 
@@ -422,7 +415,11 @@ bool Raven_Game::LoadMap(const std::string& filename)
 
 
   //load the new map data
-  if (m_pMap->LoadMap(filename)){ 
+  if (m_pMap->LoadMap(filename)){
+	  
+    m_teams.push_back(new Team(TeamColor::BLUE));
+	m_teams.push_back(new Team(TeamColor::ORANGE));
+	m_teams.push_back(new Team(TeamColor::GREEN));
 
     AddBots(script->GetInt("NumBots"));
 
@@ -857,4 +854,20 @@ void Raven_Game::Render()
       gdi->TextAtPos(GetClientCursorPosition(), "Queuing");
     }
   }
+}
+
+// Get understaffing team (team with least number of bots)
+//--------------------------------------------------------
+Team* Raven_Game::GetUnderstaffingTeam(){
+
+	Team* understaffingTeam = NULL;
+
+	for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
+		
+		if (understaffingTeam == NULL) understaffingTeam = *it;
+		else if ((*it)->getNumberOfBots() < understaffingTeam->getNumberOfBots()) understaffingTeam = *it;
+	}
+
+	return understaffingTeam;
+
 }

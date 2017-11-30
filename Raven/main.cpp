@@ -164,7 +164,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
          case VK_UP:
 
-           g_pRaven->AddBots(1); break;
+           g_pRaven->AddBots(1, false); break;
 
          case VK_DOWN:
 
@@ -234,7 +234,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
       case IDM_GAME_ADDBOT:
 
-          g_pRaven->AddBots(1);
+          g_pRaven->AddBots(1, false);
           
           break;
 

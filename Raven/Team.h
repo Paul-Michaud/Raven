@@ -51,6 +51,12 @@ public:
 	//Check if a bot is the leader
 	bool isLeader(Raven_Bot*);
 
+	//Set leader with first active bot
+	void setLeaderWithFirstActiveBot();
+
+	//Get the number of bots in team
+	int getNumberOfBots();
+
 };
 
 

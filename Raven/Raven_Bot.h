@@ -16,7 +16,7 @@
 #include "game/MovingEntity.h"
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
-#include "Team.h";
+#include "Team.h"
 
 class Raven_PathPlanner;
 class Raven_Steering;

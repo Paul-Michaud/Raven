@@ -17,6 +17,7 @@ Team::Team(TeamColor teamColor){
 //-----------------------
 void Team::addMember(Raven_Bot* member){
 	m_members.push_back(member);
+	member->setTeamMembership(this);
 }
 
 //-----------------------
@@ -110,6 +111,26 @@ bool Team::hasActiveLeader() {
 //----------------------------
 bool Team::isLeader(Raven_Bot* bot) {
 	return bot == m_pLeader;
+}
+
+
+//Set leader with first active bot
+//--------------------------------
+void Team::setLeaderWithFirstActiveBot() {
+	
+	for (std::list<Raven_Bot*>::iterator it = m_members.begin(); it != m_members.end(); ++it) {
+		if (!(*it)->isDead() && !(*it)->isSpawning()) {
+			setLeader(*it);
+			return;
+		}
+	}
+
+}
+
+//Get the number of bots in team
+//------------------------------
+int Team::getNumberOfBots() {
+	return m_members.size();
 }
 
 
