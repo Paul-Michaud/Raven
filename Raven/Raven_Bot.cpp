@@ -135,12 +135,27 @@ void Raven_Bot::Update()
   //if the bot is under AI control but not scripted
   if (!isPossessed())
   {           
+
     //examine all the opponents in the bots sensory memory and select one
     //to be the current target
-    if (m_pTargetSelectionRegulator->isReady())
-    {      
-      m_pTargSys->Update();
+    if (m_pTargetSelectionRegulator->isReady())  { 
+
+		//If this bot is not in a team or is the leader of his team
+		if (m_pTeam == NULL || m_pTeam->isLeader(this)) {
+
+			m_pTargSys->Update();
+		
+			//If it has a team, update the target
+			if (m_pTeam != NULL) m_pTeam->setTarget(m_pTargSys->GetTarget());
+	
+		}
+
     }
+	//If bot has a team and is not the leader and there is a leader in the team
+	else if (m_pTeam != NULL && !m_pTeam->isLeader(this) && m_pTeam->getLeader() != NULL) {
+
+		m_pTargSys->SetCurrentTarget(m_pTeam->getLeader()->GetmTargetSystem()->GetTarget());
+	}
 
     //appraise and arbitrate between all possible high level goals
     if (m_pGoalArbitrationRegulator->isReady())

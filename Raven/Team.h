@@ -30,8 +30,13 @@ public:
 	//Add member to the team
 	void addMember(Raven_Bot*);
 
+	//Remove particular member of the team
+	void removeMember(Raven_Bot*);
+
 	//Assign a new leader for the team
 	void setLeader(Raven_Bot*);
+
+	Raven_Bot* getLeader() { return m_pLeader; }
 
 	//Assign a new leader for the team
 	void setTarget(Raven_Bot*);
@@ -56,6 +61,9 @@ public:
 
 	//Get the number of bots in team
 	int getNumberOfBots();
+
+	//Get the team's target
+	Raven_Bot* getTarget() { return m_pTarget; }
 
 };
 

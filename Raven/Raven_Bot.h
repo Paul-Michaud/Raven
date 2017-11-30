@@ -229,6 +229,9 @@ public:
   //Set team's membership
   void setTeamMembership(Team* team) { m_pTeam = team; }
 
+  Team* GetTeam() { return m_pTeam; }
+
+  Raven_TargetingSystem* GetmTargetSystem() { return m_pTargSys; }
 
 };
 

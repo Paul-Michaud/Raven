@@ -75,25 +75,20 @@ Creating a rocket_launcher
 maps/Raven_DM1.map loaded okay
 Training set created
 Perceptron trained
-Model accuracy : 17.7715%
-deleting raven bot (id = 406)
-deleting raven bot (id = 405)
-deleting raven bot (id = 404)
-deleting raven bot (id = 403)
-deleting raven bot (id = 402)
+Model accuracy : 79.5016%
+Player is exorcised from bot 401
+Player is exorcised from bot 405
+Player is exorcised from bot 403
+Player is exorcised from bot 406
+Player is exorcised from bot 402
+Player is exorcised from bot 406
+Player is exorcised from bot 402
+Player is exorcised from bot 403
+Player is exorcised from bot 401
+BOT 402 IS STUCK!!
 deleting raven bot (id = 401)
-deleting raven bot (id = 785)
-deleting raven bot (id = 776)
-deleting raven bot (id = 727)
-deleting raven bot (id = 714)
-deleting raven bot (id = 703)
-deleting raven bot (id = 700)
-deleting raven bot (id = 697)
-deleting raven bot (id = 690)
-deleting raven bot (id = 687)
-deleting raven bot (id = 682)
-deleting raven bot (id = 679)
-deleting raven bot (id = 678)
-deleting raven bot (id = 677)
-deleting raven bot (id = 676)
-deleting raven bot (id = 675)
+deleting raven bot (id = 402)
+deleting raven bot (id = 403)
+deleting raven bot (id = 404)
+deleting raven bot (id = 405)
+deleting raven bot (id = 406)

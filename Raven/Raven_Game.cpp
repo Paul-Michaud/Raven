@@ -115,6 +115,10 @@ void Raven_Game::Update()
   //don't update if the user has paused the game
   if (m_bPaused) return;
 
+
+  /*debug_con << "   GAME UPDATE" << "";
+  debug_con << "==========================" << "";*/
+
   m_pGraveMarkers->Update();
 
   //get any player keyboard input
@@ -151,7 +155,9 @@ void Raven_Game::Update()
 
   //update teams
   for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
+
 	  if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
+
   }
   
   //update the bots
@@ -197,6 +203,8 @@ void Raven_Game::Update()
       Raven_Bot* pBot = m_Bots.back();
       if (pBot == m_pSelectedBot)m_pSelectedBot=0;
       NotifyAllBotsOfRemoval(pBot);
+
+	  if (pBot->GetTeam() != NULL) pBot->GetTeam()->removeMember(pBot);
       delete m_Bots.back();
       m_Bots.remove(pBot);
       pBot = 0;
@@ -419,7 +427,7 @@ bool Raven_Game::LoadMap(const std::string& filename)
 	  
     m_teams.push_back(new Team(TeamColor::BLUE));
 	m_teams.push_back(new Team(TeamColor::ORANGE));
-	m_teams.push_back(new Team(TeamColor::GREEN));
+	//m_teams.push_back(new Team(TeamColor::GREEN));
 
     AddBots(script->GetInt("NumBots"));
 

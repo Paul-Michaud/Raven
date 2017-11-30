@@ -1,6 +1,8 @@
 #include "Team.h"
 #include "misc/Cgdi.h"
 
+#include "debug/DebugConsole.h"
+
 
 //-----------------------
 //     Constructor
@@ -24,7 +26,7 @@ void Team::addMember(Raven_Bot* member){
 // Assign a new leader for the team
 //-----------------------
 void Team::setLeader(Raven_Bot* leader){
-	leader = leader;
+	m_pLeader = leader;
 }
 
 //-----------------------
@@ -131,6 +133,20 @@ void Team::setLeaderWithFirstActiveBot() {
 //------------------------------
 int Team::getNumberOfBots() {
 	return m_members.size();
+}
+
+
+//Remove particular member of the team
+//------------------------------------
+void Team::removeMember(Raven_Bot* bot) {
+	
+	m_members.remove(bot);
+
+	if (bot == m_pLeader) {
+		m_pLeader = NULL;
+		m_pTarget = NULL;
+	}
+
 }
 
 
