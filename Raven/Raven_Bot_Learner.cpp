@@ -69,6 +69,7 @@ void Raven_Bot_Learner::Update() {
 
 		bool result = (*perceptron).get_result({ DistToTarget, Velocity, TimeTargetHasBeenVisible, WeaponType, Ammo });
 
+		debug_con << "result : " << result << "";
 			
 		m_pWeaponSys->TakeAimAndShootLearner(result);
 
