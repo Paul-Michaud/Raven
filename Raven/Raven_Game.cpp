@@ -266,8 +266,11 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd){
 	if(NumBotsToAdd == 1) rb = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
 	else rb = new Raven_Bot(this, Vector2D());
 
-	//Assign team
+	//Assign team to the bot
 	rb->setTeamMembership(*teamIterator);
+	//Bot is the team's leader
+	(*teamIterator)->setLeader(rb);
+	
 	teamIterator++;
 	if(teamIterator == m_teams.end()) teamIterator = m_teams.begin();
 
