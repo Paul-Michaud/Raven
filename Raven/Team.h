@@ -18,7 +18,7 @@ class Team {
 
 private:
 
-	std::list<Raven_Bot*> teamMembers;
+	std::list<Raven_Bot*> members;
 	Raven_Bot* leader;
 	Raven_Bot* target;
 
@@ -28,13 +28,15 @@ public:
 	Team();
 
 	//Add member to the team
-	void addMember(Raven_Bot&);
+	void addMember(Raven_Bot*);
 
 	//Assign a new leader for the team
-	void setLeader(Raven_Bot&);
+	void setLeader(Raven_Bot*);
 
 	//Assign a new leader for the team
-	void setTarget(Raven_Bot&);
+	void setTarget(Raven_Bot*);
+
+	//void setGdiContext()
 
 };
 

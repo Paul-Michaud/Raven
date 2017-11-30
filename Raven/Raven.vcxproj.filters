@@ -271,11 +271,11 @@
     <ClCompile Include="Raven_Bot_Learner.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Raven_Bot.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Raven_Game.h">
       <Filter>Game</Filter>
     </ClInclude>
@@ -614,6 +614,9 @@
     </ClInclude>
     <ClInclude Include="Perceptron.hpp" />
     <ClInclude Include="TrainingItem.hpp" />
+    <ClInclude Include="Team.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">
