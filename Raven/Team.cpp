@@ -119,14 +119,14 @@ bool Team::isLeader(Raven_Bot* bot) {
 //Set leader with first active bot
 //--------------------------------
 void Team::setLeaderWithFirstActiveBot() {
-	
-	for (std::list<Raven_Bot*>::iterator it = m_members.begin(); it != m_members.end(); ++it) {
-		if (!(*it)->isDead() && !(*it)->isSpawning()) {
-			setLeader(*it);
-			return;
+	if (!m_members.empty()) {
+		for (std::list<Raven_Bot*>::iterator it = m_members.begin(); it != m_members.end(); ++it) {
+			if (!(*it)->isDead() && !(*it)->isSpawning()) {
+				setLeader(*it);
+				return;
+			}
 		}
 	}
-
 }
 
 //Get the number of bots in team
@@ -139,7 +139,7 @@ int Team::getNumberOfBots() {
 //Remove particular member of the team
 //------------------------------------
 void Team::removeMember(Raven_Bot* bot) {
-	
+	debug_con <<"Removing bot" << bot->ID() << "";
 	m_members.remove(bot);
 
 	if (bot == m_pLeader) {
@@ -152,6 +152,7 @@ void Team::removeMember(Raven_Bot* bot) {
 //Check if a bot is in this team with his ID
 //------------------------------------
 bool Team::isInTeam(int id) {
+	
 	for (std::list<Raven_Bot*>::iterator it = m_members.begin(); it != m_members.end(); ++it) {
 		if ((*it)->ID() == id) return true;
 	}
@@ -159,3 +160,6 @@ bool Team::isInTeam(int id) {
 }
 
 
+Team::~Team() {
+	debug_con << "detructing team" << "";
+}
