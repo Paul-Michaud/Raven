@@ -114,10 +114,6 @@ void Raven_Game::Update()
 { 
   //don't update if the user has paused the game
   if (m_bPaused) return;
-  debug_con << "#1" << "";
-	   
-  /*debug_con << "   GAME UPDATE" << "";
-  debug_con << "==========================" << "";*/
 
   m_pGraveMarkers->Update();
 
@@ -132,7 +128,6 @@ void Raven_Game::Update()
   {
     (*curDoor)->Update();
   }
-  debug_con << "#2" << "";
 
   //update any current projectiles
   std::list<Raven_Projectile*>::iterator curW = m_Projectiles.begin();
@@ -157,7 +152,6 @@ void Raven_Game::Update()
 	if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
 
   }
-  debug_con << "#3" << "";
 
   //update the bots
   bool bSpawnPossible = true;
@@ -188,7 +182,6 @@ void Raven_Game::Update()
       (*curBot)->Update();
     }  
   } 
-  debug_con << "#4" << "";
   //update the triggers
   m_pMap->UpdateTriggerSystem(m_Bots);
 
@@ -210,7 +203,6 @@ void Raven_Game::Update()
 
     m_bRemoveABot = false;
   }
-  debug_con << "#5" << "";
 }
 
 
@@ -885,6 +877,7 @@ Team* Raven_Game::GetUnderstaffingTeam(){
 // Remove a team
 //--------------
 void Raven_Game::RemoveTeam(TeamColor color) {
+	debug_con << "Deleting team" <<  "";
 	Team * teamToDelete;
 	std::list<Team*>::iterator it = m_teams.begin();
 	while (it != m_teams.end()) {
@@ -912,5 +905,7 @@ void Raven_Game::RemoveTeam(TeamColor color) {
 }
 
 void Raven_Game::AddTeam(TeamColor color) {
+	debug_con << "Adding team" << "";
+
 	m_teams.push_back(new Team(color));
 }

@@ -7,6 +7,6 @@
 //  Desc:
 //-----------------------------------------------------------------------------
 
-enum class TeamColor { BLUE, RED, GREEN, GREY, YELLOW, ORANGE };
+enum class TeamColor { BLUE, RED, GREEN, GREY, YELLOW, ORANGE } ;
 
 #endif
