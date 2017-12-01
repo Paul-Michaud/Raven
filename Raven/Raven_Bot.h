@@ -16,6 +16,7 @@
 #include "game/MovingEntity.h"
 #include "misc/utils.h"
 #include "Raven_TargetingSystem.h"
+#include "Team.h"
 
 class Raven_PathPlanner;
 class Raven_Steering;
@@ -27,6 +28,7 @@ class Raven_Bot;
 class Goal_Think;
 class Raven_WeaponSystem;
 class Raven_SensoryMemory;
+class Team;
 
 
 
@@ -111,6 +113,9 @@ protected:
   std::vector<Vector2D>              m_vecBotVB;
   //the buffer for the transformed vertices
   std::vector<Vector2D>              m_vecBotVBTrans;
+
+  //Team's membership
+  Team* m_pTeam;
 
 
   //bots shouldn't be copied, only created or respawned
@@ -221,6 +226,12 @@ public:
   Raven_WeaponSystem* const          GetWeaponSys()const{return m_pWeaponSys;}
   Raven_SensoryMemory* const         GetSensoryMem()const{return m_pSensoryMem;}
 
+  //Set team's membership
+  void setTeamMembership(Team* team) { m_pTeam = team; }
+
+  Team* GetTeam() { return m_pTeam; }
+
+  Raven_TargetingSystem* GetmTargetSystem() { return m_pTargSys; }
 
 };
 

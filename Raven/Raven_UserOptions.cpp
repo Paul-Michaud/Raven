@@ -20,5 +20,9 @@ Raven_UserOptions::Raven_UserOptions():m_bShowGraph(false),
                       m_bShowGoalAppraisals(true),
                       m_bShowNodeIndices(false),
                       m_bShowOpponentsSensedBySelectedBot(true),
-                      m_bShowWeaponAppraisals(false)
+                      m_bShowWeaponAppraisals(false),
+					  m_bTeamYellow(false),
+					  m_bTeamRed(false),
+					  m_bTeamGreen(false),
+					  m_bTeamOrange(false)
 {}

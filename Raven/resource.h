@@ -23,6 +23,11 @@
 #define IDM_NAVIGATION_SMOOTH_PATHS_PRECISE 40015
 #define IDM_BOTS_SHOW_SENSED            40016
 #define IDM_GAME_PAUSE                  40017
+#define IDM_TEAM_YELLOW					40018
+#define IDM_TEAM_RED					40019
+#define IDM_TEAM_GREEN                  40020
+#define IDM_TEAM_ORANGE                 40021
+
 
 // Next default values for new objects
 // 

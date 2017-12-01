@@ -27,8 +27,12 @@ void Raven_TargetingSystem::Update()
   std::list<Raven_Bot*>::const_iterator curBot = SensedBots.begin();
   for (curBot; curBot != SensedBots.end(); ++curBot)
   {
-    //make sure the bot is alive and that it is not the owner
-    if ((*curBot)->isAlive() && (*curBot != m_pOwner) )
+
+	Team* ownerTeam = m_pOwner->GetTeam();
+	Team* curBotTeam = (*curBot)->GetTeam();
+
+	//make sure the bot is alive and that it is not the owner and is not in the same team
+    if ((*curBot)->isAlive() && (*curBot != m_pOwner) && (ownerTeam == NULL || (ownerTeam != NULL && ownerTeam != curBotTeam)) )
     {
       double dist = Vec2DDistanceSq((*curBot)->Pos(), m_pOwner->Pos());
 

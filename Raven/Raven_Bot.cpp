@@ -83,6 +83,8 @@ Raven_Bot::Raven_Bot(Raven_Game* world,Vector2D pos):
                                         script->GetDouble("Bot_AimPersistance"));
 
   m_pSensoryMem = new Raven_SensoryMemory(this, script->GetDouble("Bot_MemorySpan"));
+
+  m_pTeam = NULL;
 }
 
 //-------------------------------- dtor ---------------------------------------
@@ -102,6 +104,8 @@ Raven_Bot::~Raven_Bot()
   delete m_pVisionUpdateRegulator;
   delete m_pWeaponSys;
   delete m_pSensoryMem;
+
+  debug_con << "fin destructeur raven bot" << "";
 }
 
 //------------------------------- Spawn ---------------------------------------
@@ -131,14 +135,28 @@ void Raven_Bot::Update()
   UpdateMovement();
 
   //if the bot is under AI control but not scripted
-  if (!isPossessed())
-  {           
+  if (!isPossessed()) {           
+
     //examine all the opponents in the bots sensory memory and select one
     //to be the current target
-    if (m_pTargetSelectionRegulator->isReady())
-    {      
-      m_pTargSys->Update();
+    if (m_pTargetSelectionRegulator->isReady())  { 
+
+		//If this bot is not in a team or is the leader of his team
+		if (m_pTeam == NULL || m_pTeam->isLeader(this)) {
+
+			m_pTargSys->Update();
+		
+			//If it has a team, update the target
+			if (m_pTeam != NULL) m_pTeam->setTarget(m_pTargSys->GetTarget());
+	
+		}
+
     }
+	//If bot has a team and is not the leader and there is a leader in the team
+	else if (m_pTeam != NULL && !m_pTeam->isLeader(this) && m_pTeam->getLeader() != NULL) {
+
+		m_pTargSys->SetCurrentTarget(m_pTeam->getLeader()->GetmTargetSystem()->GetTarget());
+	}
 
     //appraise and arbitrate between all possible high level goals
     if (m_pGoalArbitrationRegulator->isReady())
@@ -238,7 +256,9 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
     if (isDead() || isSpawning()) return true;
 
     //the extra info field of the telegram carries the amount of damage
-    ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
+	//if not in my team take dmg else do nothing
+	if(m_pTeam == NULL) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
+	else if(!m_pTeam->isInTeam(msg.Sender)) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
 
     //if this bot is now dead let the shooter know
     if (isDead())
@@ -517,8 +537,10 @@ void Raven_Bot::Render()
 
   if (isDead() || isSpawning()) return;
   
-  gdi->BluePen();
-  
+  if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
+  else {
+	  gdi->BluePen();
+  }
   m_vecBotVBTrans = WorldTransform(m_vecBotVB,
                                    Pos(),
                                    Facing(),
@@ -528,7 +550,8 @@ void Raven_Bot::Render()
   gdi->ClosedShape(m_vecBotVBTrans);
   
   //draw the head
-  gdi->BrownBrush();
+  if (m_pTeam != NULL) m_pTeam->setGdiBrushColor();
+  else gdi->BrownBrush();
   gdi->Circle(Pos(), 6.0 * Scale().x);
 
 

@@ -28,6 +28,8 @@
 
 #include "debug/DebugConsole.h"
 
+#include "TeamColor.h"
+
 
 
 //uncomment to write object creation/deletion to debug console
@@ -99,6 +101,8 @@ void Raven_Game::Clear()
 
   m_pSelectedBot = NULL;
 
+  //Delete teams
+  for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) delete *it;
 
 }
 
@@ -115,7 +119,6 @@ void Raven_Game::Update()
 
   //get any player keyboard input
   GetPlayerInput();
-  
   //update all the queued searches in the path manager
   m_pPathManager->UpdateSearches();
 
@@ -140,14 +143,18 @@ void Raven_Game::Update()
     else
     {    
       delete *curW;
-
       curW = m_Projectiles.erase(curW);
     }   
   }
-  
+   //update teams
+  for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
+	  
+	if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
+
+  }
+
   //update the bots
   bool bSpawnPossible = true;
-  
   std::list<Raven_Bot*>::iterator curBot = m_Bots.begin();
   for (curBot; curBot != m_Bots.end(); ++curBot)
   {
@@ -175,7 +182,6 @@ void Raven_Game::Update()
       (*curBot)->Update();
     }  
   } 
-
   //update the triggers
   m_pMap->UpdateTriggerSystem(m_Bots);
 
@@ -188,6 +194,8 @@ void Raven_Game::Update()
       Raven_Bot* pBot = m_Bots.back();
       if (pBot == m_pSelectedBot)m_pSelectedBot=0;
       NotifyAllBotsOfRemoval(pBot);
+
+	  if (pBot->GetTeam() != NULL) pBot->GetTeam()->removeMember(pBot);
       delete m_Bots.back();
       m_Bots.remove(pBot);
       pBot = 0;
@@ -246,13 +254,21 @@ bool Raven_Game::AttemptToAddBot(Raven_Bot* pBot)
 //
 //  Adds a bot and switches on the default steering behavior
 //-----------------------------------------------------------------------------
-void Raven_Game::AddBots(unsigned int NumBotsToAdd)
-{ 
-  while (NumBotsToAdd--)
-  {
-    //create a bot. (its position is irrelevant at this point because it will
+void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool addBotLearnerAtTheEnd){
+
+  while (NumBotsToAdd > 0){
+    
+	//create a bot. (its position is irrelevant at this point because it will
     //not be rendered until it is spawned)
-    Raven_Bot* rb = new Raven_Bot(this, Vector2D());
+	Raven_Bot* rb = NULL;
+	if(addBotLearnerAtTheEnd && NumBotsToAdd == 1) rb = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
+	else rb = new Raven_Bot(this, Vector2D());
+
+	//Assign bot to a team
+	if (!m_teams.empty()) {
+		Team* team = GetUnderstaffingTeam();
+		team->addMember(rb);
+	}
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -263,11 +279,14 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd)
     //register the bot with the entity manager
     EntityMgr->RegisterEntity(rb);
 
+	NumBotsToAdd--;
     
-#ifdef LOG_CREATIONAL_STUFF
-  debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
-#endif
+	#ifdef LOG_CREATIONAL_STUFF
+	  debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
+	#endif
+
   }
+
 }
 
 //---------------------------- NotifyAllBotsOfRemoval -------------------------
@@ -407,16 +426,23 @@ bool Raven_Game::LoadMap(const std::string& filename)
 
 
   //load the new map data
-  if (m_pMap->LoadMap(filename))
-  { 
+  if (m_pMap->LoadMap(filename)){
+	  
+    if(UserOptions->m_bTeamYellow) m_teams.push_back(new Team(TeamColor::YELLOW));
+	if(UserOptions->m_bTeamRed)m_teams.push_back(new Team(TeamColor::RED));
+	if(UserOptions->m_bTeamGreen) m_teams.push_back(new Team(TeamColor::GREEN));
+	if(UserOptions->m_bTeamOrange) m_teams.push_back(new Team(TeamColor::ORANGE));
+
     AddBots(script->GetInt("NumBots"));
 
-	//Create a learnerBot
+	// !!! MOVED IN AddBots
+	//---------------------
+	/*//Create a learnerBot
 	Raven_Bot_Learner* rbl = new Raven_Bot_Learner(this, Vector2D(), m_Bots);
 	rbl->GetSteering()->WallAvoidanceOn();
 	rbl->GetSteering()->SeparationOn();
 	m_Bots.push_back(rbl);
-	EntityMgr->RegisterEntity(rbl);
+	EntityMgr->RegisterEntity(rbl);*/
   
     return true;
   }
@@ -843,4 +869,56 @@ void Raven_Game::Render()
       gdi->TextAtPos(GetClientCursorPosition(), "Queuing");
     }
   }
+}
+
+// Get understaffing team (team with least number of bots)
+//--------------------------------------------------------
+Team* Raven_Game::GetUnderstaffingTeam(){
+
+	Team* understaffingTeam = NULL;
+
+	for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
+		
+		if (understaffingTeam == NULL) understaffingTeam = *it;
+		else if ((*it)->getNumberOfBots() < understaffingTeam->getNumberOfBots()) understaffingTeam = *it;
+	}
+
+	return understaffingTeam;
+
+}
+
+// Remove a team
+//--------------
+void Raven_Game::RemoveTeam(TeamColor color) {
+	debug_con << "Deleting team" <<  "";
+	Team * teamToDelete;
+	std::list<Team*>::iterator it = m_teams.begin();
+	while (it != m_teams.end()) {
+		if ((*it)->GetTeamColor() == color) {
+			teamToDelete = *it;
+			break;
+		}
+		++it;
+	}
+	
+	std::list<Raven_Bot*>::iterator curBot = m_Bots.begin();
+	while(curBot != m_Bots.end()) {
+		if ((*curBot)->GetTeam() == NULL) return;
+		if ((*curBot)->GetTeam()->GetTeamColor() == color) {
+			teamToDelete->removeMember(*curBot);
+			(*curBot)->setTeamMembership(NULL);
+			NotifyAllBotsOfRemoval(*curBot);
+			delete *curBot;
+			m_Bots.remove(*curBot++);
+		} else {
+			curBot++;
+		}
+	}
+	 m_teams.erase(it);
+}
+
+void Raven_Game::AddTeam(TeamColor color) {
+	debug_con << "Adding team" << "";
+
+	m_teams.push_back(new Team(color));
 }

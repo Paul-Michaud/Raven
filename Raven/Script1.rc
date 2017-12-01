@@ -59,6 +59,13 @@ BEGIN
         MENUITEM "Show Goal Queue",             IDM_BOTS_SHOW_GOAL_Q
         MENUITEM "Show Path",                   IDM_NAVIGATION_SHOW_PATH
     END
+	POPUP "Teams options"
+    BEGIN
+        MENUITEM "Team Yellow",  IDM_TEAM_YELLOW
+        MENUITEM "Team Red", IDM_TEAM_RED
+        MENUITEM "Team Green",  IDM_TEAM_GREEN
+        MENUITEM "Team Orange",  IDM_TEAM_ORANGE
+    END
 END
 
 

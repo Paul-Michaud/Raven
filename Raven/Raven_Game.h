@@ -26,6 +26,7 @@
 #include "Raven_Bot.h"
 #include "Raven_Bot_Learner.h"
 #include "navigation/pathmanager.h"
+#include "Team.h"
 
 
 class BaseGameEntity;
@@ -67,6 +68,9 @@ private:
   //class manages the graves
   GraveMarkers*                    m_pGraveMarkers;
 
+  //teams
+  std::list<Team*> m_teams;
+
   //this iterates through each trigger, testing each one against each bot
   void  UpdateTriggers();
 
@@ -81,6 +85,11 @@ private:
   //must be notified so that they can remove any references to that bot from
   //their memory
   void NotifyAllBotsOfRemoval(Raven_Bot* pRemovedBot)const;
+
+  //Get understaffing team (team with least number of bots)
+  Team* GetUnderstaffingTeam();
+
+
   
 public:
   
@@ -94,7 +103,7 @@ public:
   //loads an environment from a file
   bool LoadMap(const std::string& FileName); 
 
-  void AddBots(unsigned int NumBotsToAdd);
+  void AddBots(unsigned int NumBotsToAdd, bool addBotLearnerAtTheEnd = true);
   void AddRocket(Raven_Bot* shooter, Vector2D target);
   void AddRailGunSlug(Raven_Bot* shooter, Vector2D target);
   void AddShotGunPellet(Raven_Bot* shooter, Vector2D target);
@@ -163,7 +172,12 @@ public:
   PathManager<Raven_PathPlanner>* const    GetPathManager(){return m_pPathManager;}
   int                                      GetNumBots()const{return m_Bots.size();}
 
-  
+  //remove a team
+  void RemoveTeam(TeamColor color);
+
+  //add a team
+  void AddTeam(TeamColor color);
+
   void  TagRaven_BotsWithinViewRange(BaseGameEntity* pRaven_Bot, double range)
               {TagNeighbors(pRaven_Bot, m_Bots, range);}  
 };
