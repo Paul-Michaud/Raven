@@ -149,5 +149,13 @@ void Team::removeMember(Raven_Bot* bot) {
 
 }
 
+//Check if a bot is in this team with his ID
+//------------------------------------
+bool Team::isInTeam(int id) {
+	for (std::list<Raven_Bot*>::iterator it = m_members.begin(); it != m_members.end(); ++it) {
+		if ((*it)->ID() == id) return true;
+	}
+	return false;
+}
 
 

@@ -65,6 +65,9 @@ public:
 	//Get the team's target
 	Raven_Bot* getTarget() { return m_pTarget; }
 
+	//Check if a bot is in this team with his ID
+	bool isInTeam(int id);
+
 };
 
 

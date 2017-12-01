@@ -255,7 +255,8 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
     if (isDead() || isSpawning()) return true;
 
     //the extra info field of the telegram carries the amount of damage
-    ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
+	//if not in my team take dmg else do nothing
+	if(!m_pTeam->isInTeam(msg.Sender)) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
 
     //if this bot is now dead let the shooter know
     if (isDead())
