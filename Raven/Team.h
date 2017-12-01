@@ -68,6 +68,10 @@ public:
 	//Check if a bot is in this team with his ID
 	bool isInTeam(int id);
 
+	//Get the team color
+	TeamColor GetTeamColor() { return m_eTeamColor; }
+
+	~Team();
 };
 
 
