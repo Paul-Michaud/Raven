@@ -111,6 +111,11 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
         CheckMenuItemAppropriately(hwnd, IDM_NAVIGATION_SHOW_INDICES, UserOptions->m_bShowNodeIndices);
         CheckMenuItemAppropriately(hwnd, IDM_BOTS_SHOW_SENSED, UserOptions->m_bShowOpponentsSensedBySelectedBot);
 
+		CheckMenuItemAppropriately(hwnd, IDM_TEAM_YELLOW, UserOptions->m_bTeamYellow);
+		CheckMenuItemAppropriately(hwnd, IDM_TEAM_RED, UserOptions->m_bTeamRed);
+		CheckMenuItemAppropriately(hwnd, IDM_TEAM_GREEN, UserOptions->m_bTeamGreen);
+		CheckMenuItemAppropriately(hwnd, IDM_TEAM_ORANGE, UserOptions->m_bTeamOrange);
+
       }
 
       break;
@@ -351,6 +356,38 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
         break;
 
+	  case IDM_TEAM_YELLOW:
+		  UserOptions->m_bTeamYellow = !UserOptions->m_bTeamYellow;
+		  if (UserOptions->m_bTeamYellow) g_pRaven->AddTeam(TeamColor::YELLOW);
+		  else g_pRaven->RemoveTeam(TeamColor::YELLOW);
+		
+		  CheckMenuItemAppropriately(hwnd, IDM_TEAM_YELLOW, UserOptions->m_bTeamYellow);
+		break;
+
+	  case IDM_TEAM_RED:
+		  UserOptions->m_bTeamRed = !UserOptions->m_bTeamRed;
+		  if (UserOptions->m_bTeamRed) g_pRaven->AddTeam(TeamColor::RED);
+		  else g_pRaven->RemoveTeam(TeamColor::RED);
+
+		  CheckMenuItemAppropriately(hwnd, IDM_TEAM_RED, UserOptions->m_bTeamRed);
+		  break;
+
+	  case IDM_TEAM_GREEN:
+		  UserOptions->m_bTeamGreen = !UserOptions->m_bTeamGreen;
+		  if (UserOptions->m_bTeamGreen) g_pRaven->AddTeam(TeamColor::GREEN);
+		  else g_pRaven->RemoveTeam(TeamColor::GREEN);
+
+		  CheckMenuItemAppropriately(hwnd, IDM_TEAM_GREEN, UserOptions->m_bTeamGreen);
+		  break;
+
+	  case IDM_TEAM_ORANGE:
+		  UserOptions->m_bTeamOrange = !UserOptions->m_bTeamOrange;
+		  if (UserOptions->m_bTeamOrange) g_pRaven->AddTeam(TeamColor::ORANGE);
+		  else g_pRaven->RemoveTeam(TeamColor::ORANGE);
+
+		  CheckMenuItemAppropriately(hwnd, IDM_TEAM_ORANGE, UserOptions->m_bTeamOrange);
+		  break;
+
       }//end switch
     }
 
@@ -454,8 +491,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 int WINAPI WinMain (HINSTANCE hInstance,
                     HINSTANCE hPrevInstance,
                     LPSTR     szCmdLine, 
-                    int       iCmdShow)
-{
+                    int       iCmdShow){
   MSG msg;
   //handle to our window
 	HWND						hWnd;
