@@ -104,6 +104,8 @@ Raven_Bot::~Raven_Bot()
   delete m_pVisionUpdateRegulator;
   delete m_pWeaponSys;
   delete m_pSensoryMem;
+
+  debug_con << "fin destructeur raven bot" << "";
 }
 
 //------------------------------- Spawn ---------------------------------------
@@ -133,8 +135,7 @@ void Raven_Bot::Update()
   UpdateMovement();
 
   //if the bot is under AI control but not scripted
-  if (!isPossessed())
-  {           
+  if (!isPossessed()) {           
 
     //examine all the opponents in the bots sensory memory and select one
     //to be the current target
@@ -256,7 +257,8 @@ bool Raven_Bot::HandleMessage(const Telegram& msg)
 
     //the extra info field of the telegram carries the amount of damage
 	//if not in my team take dmg else do nothing
-	if(!m_pTeam->isInTeam(msg.Sender)) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
+	if(m_pTeam == NULL) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
+	else if(!m_pTeam->isInTeam(msg.Sender)) ReduceHealth(DereferenceToType<int>(msg.ExtraInfo));
 
     //if this bot is now dead let the shooter know
     if (isDead())
@@ -536,8 +538,9 @@ void Raven_Bot::Render()
   if (isDead() || isSpawning()) return;
   
   if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
-  else gdi->BluePen();
-  
+  else {
+	  gdi->BluePen();
+  }
   m_vecBotVBTrans = WorldTransform(m_vecBotVB,
                                    Pos(),
                                    Facing(),
