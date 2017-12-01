@@ -206,7 +206,7 @@ Vector2D  Raven_SensoryMemory::GetLastRecordedPositionOfOpponent(Raven_Bot* pOpp
     return it->second.vLastSensedPosition;
   }
 
-  throw std::runtime_error("< Raven_SensoryMemory::GetLastRecordedPositionOfOpponent>: Attempting to get position of unrecorded bot");
+  //throw std::runtime_error("< Raven_SensoryMemory::GetLastRecordedPositionOfOpponent>: Attempting to get position of unrecorded bot");
 }
 
 //----------------------------- GetTimeOpponentHasBeenVisible ----------------------
