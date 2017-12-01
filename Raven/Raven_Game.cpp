@@ -114,8 +114,8 @@ void Raven_Game::Update()
 { 
   //don't update if the user has paused the game
   if (m_bPaused) return;
-
-
+  debug_con << "#1" << "";
+	   
   /*debug_con << "   GAME UPDATE" << "";
   debug_con << "==========================" << "";*/
 
@@ -123,7 +123,6 @@ void Raven_Game::Update()
 
   //get any player keyboard input
   GetPlayerInput();
-  
   //update all the queued searches in the path manager
   m_pPathManager->UpdateSearches();
 
@@ -133,6 +132,7 @@ void Raven_Game::Update()
   {
     (*curDoor)->Update();
   }
+  debug_con << "#2" << "";
 
   //update any current projectiles
   std::list<Raven_Projectile*>::iterator curW = m_Projectiles.begin();
@@ -148,21 +148,19 @@ void Raven_Game::Update()
     else
     {    
       delete *curW;
-
       curW = m_Projectiles.erase(curW);
     }   
   }
-
-  //update teams
+   //update teams
   for (std::list<Team*>::iterator it = m_teams.begin(); it != m_teams.end(); ++it) {
-
-	  if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
+	  
+	if (!(*it)->hasActiveLeader()) (*it)->setLeaderWithFirstActiveBot();
 
   }
-  
+  debug_con << "#3" << "";
+
   //update the bots
   bool bSpawnPossible = true;
-  
   std::list<Raven_Bot*>::iterator curBot = m_Bots.begin();
   for (curBot; curBot != m_Bots.end(); ++curBot)
   {
@@ -190,7 +188,7 @@ void Raven_Game::Update()
       (*curBot)->Update();
     }  
   } 
-
+  debug_con << "#4" << "";
   //update the triggers
   m_pMap->UpdateTriggerSystem(m_Bots);
 
@@ -212,6 +210,7 @@ void Raven_Game::Update()
 
     m_bRemoveABot = false;
   }
+  debug_con << "#5" << "";
 }
 
 
@@ -274,8 +273,10 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool addBotLearnerAtTheEnd){
 	else rb = new Raven_Bot(this, Vector2D());
 
 	//Assign bot to a team
-	Team* team = GetUnderstaffingTeam();
-	team->addMember(rb);
+	if (!m_teams.empty()) {
+		Team* team = GetUnderstaffingTeam();
+		team->addMember(rb);
+	}
 
     //switch the default steering behaviors on
     rb->GetSteering()->WallAvoidanceOn();
@@ -425,9 +426,10 @@ bool Raven_Game::LoadMap(const std::string& filename)
   //load the new map data
   if (m_pMap->LoadMap(filename)){
 	  
-    m_teams.push_back(new Team(TeamColor::BLUE));
-	m_teams.push_back(new Team(TeamColor::ORANGE));
-	//m_teams.push_back(new Team(TeamColor::GREEN));
+    if(UserOptions->m_bTeamYellow) m_teams.push_back(new Team(TeamColor::YELLOW));
+	if(UserOptions->m_bTeamRed)m_teams.push_back(new Team(TeamColor::RED));
+	if(UserOptions->m_bTeamGreen) m_teams.push_back(new Team(TeamColor::GREEN));
+	if(UserOptions->m_bTeamOrange) m_teams.push_back(new Team(TeamColor::ORANGE));
 
     AddBots(script->GetInt("NumBots"));
 
@@ -878,4 +880,37 @@ Team* Raven_Game::GetUnderstaffingTeam(){
 
 	return understaffingTeam;
 
+}
+
+// Remove a team
+//--------------
+void Raven_Game::RemoveTeam(TeamColor color) {
+	Team * teamToDelete;
+	std::list<Team*>::iterator it = m_teams.begin();
+	while (it != m_teams.end()) {
+		if ((*it)->GetTeamColor() == color) {
+			teamToDelete = *it;
+			break;
+		}
+		++it;
+	}
+	
+	std::list<Raven_Bot*>::iterator curBot = m_Bots.begin();
+	while(curBot != m_Bots.end()) {
+		if ((*curBot)->GetTeam() == NULL) return;
+		if ((*curBot)->GetTeam()->GetTeamColor() == color) {
+			teamToDelete->removeMember(*curBot);
+			(*curBot)->setTeamMembership(NULL);
+			NotifyAllBotsOfRemoval(*curBot);
+			delete *curBot;
+			m_Bots.remove(*curBot++);
+		} else {
+			curBot++;
+		}
+	}
+	 m_teams.erase(it);
+}
+
+void Raven_Game::AddTeam(TeamColor color) {
+	m_teams.push_back(new Team(color));
 }
