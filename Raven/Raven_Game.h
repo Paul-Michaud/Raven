@@ -88,6 +88,8 @@ private:
 
   //Get understaffing team (team with least number of bots)
   Team* GetUnderstaffingTeam();
+
+
   
 public:
   
@@ -170,7 +172,12 @@ public:
   PathManager<Raven_PathPlanner>* const    GetPathManager(){return m_pPathManager;}
   int                                      GetNumBots()const{return m_Bots.size();}
 
-  
+  //remove a team
+  void RemoveTeam(TeamColor color);
+
+  //add a team
+  void AddTeam(TeamColor color);
+
   void  TagRaven_BotsWithinViewRange(BaseGameEntity* pRaven_Bot, double range)
               {TagNeighbors(pRaven_Bot, m_Bots, range);}  
 };
