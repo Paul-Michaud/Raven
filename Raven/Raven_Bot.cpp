@@ -537,10 +537,10 @@ void Raven_Bot::Render()
 
   if (isDead() || isSpawning()) return;
   
-  if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
-  else {
-	  gdi->BluePen();
-  }
+  if (m_pTeam != NULL && m_pTeam->isLeader(this)) gdi->BlackPen();
+  else if (m_pTeam != NULL) m_pTeam->setGdiPenColor();
+  else gdi->BluePen();
+
   m_vecBotVBTrans = WorldTransform(m_vecBotVB,
                                    Pos(),
                                    Facing(),
@@ -553,6 +553,9 @@ void Raven_Bot::Render()
   if (m_pTeam != NULL) m_pTeam->setGdiBrushColor();
   else gdi->BrownBrush();
   gdi->Circle(Pos(), 6.0 * Scale().x);
+
+  /*if (m_pTeam != NULL && m_pTeam->isLeader(this)) gdi->BlackPen();
+  gdi->Circle(Pos(), 4.0 * Scale().x);*/
 
 
   //render the bot's weapon
