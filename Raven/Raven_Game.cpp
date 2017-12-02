@@ -281,9 +281,7 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool addBotLearnerAtTheEnd){
 
 	NumBotsToAdd--;
     
-	#ifdef LOG_CREATIONAL_STUFF
-	  debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
-	#endif
+	debug_con << "Adding bot with ID " << ttos(rb->ID()) << "";
 
   }
 
@@ -891,6 +889,8 @@ Team* Raven_Game::GetUnderstaffingTeam(){
 //--------------
 void Raven_Game::RemoveTeam(TeamColor color) {
 	debug_con << "Deleting team" <<  "";
+
+	debug_con << "Il y a " << m_teams.size() << " team active avant supressions" << "";
 	Team * teamToDelete;
 	std::list<Team*>::iterator it = m_teams.begin();
 	while (it != m_teams.end()) {
@@ -902,9 +902,38 @@ void Raven_Game::RemoveTeam(TeamColor color) {
 	}
 	
 	std::list<Raven_Bot*>::iterator curBot = m_Bots.begin();
+	debug_con << "Il y a " << m_Bots.size() << " bot actifs avant supressions" << "";
+
 	while(curBot != m_Bots.end()) {
-		if ((*curBot)->GetTeam() == NULL) return;
-		if ((*curBot)->GetTeam()->GetTeamColor() == color) {
+
+
+
+		if ((*curBot)->GetTeam()) {
+			switch ((*curBot)->GetTeam()->GetTeamColor()) {
+			case TeamColor::BLUE:
+				debug_con << "blue" << "";
+				break;
+			case TeamColor::GREEN:
+				debug_con << "green" << "";
+				break;
+			case TeamColor::ORANGE:
+				debug_con << "orange" << "";
+				break;
+			case TeamColor::RED:
+				debug_con << "red" << "";
+				break;
+			}
+		}
+		else {
+			debug_con << "Le bot n'a pas de team" << "";
+		}
+
+
+
+		if ((*curBot)->GetTeam() == NULL) {
+			curBot++;
+		}
+		else if ((*curBot)->GetTeam()->GetTeamColor() == color) {
 			teamToDelete->removeMember(*curBot);
 			(*curBot)->setTeamMembership(NULL);
 			NotifyAllBotsOfRemoval(*curBot);
@@ -915,6 +944,9 @@ void Raven_Game::RemoveTeam(TeamColor color) {
 		}
 	}
 	 m_teams.erase(it);
+
+	 debug_con << " Il y a " << m_teams.size() << "team active après supressions" << "";
+
 }
 
 void Raven_Game::AddTeam(TeamColor color) {
