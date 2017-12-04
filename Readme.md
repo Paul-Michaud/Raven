@@ -21,14 +21,13 @@ Contient le code source du TP ainsi que l'exécutable
 
     * Weapon_RocketLauncher.cpp
 
-	
-  a)création class raven_bot_learner
-  b)besoin de savoir quand un bot a tiré ou a voulu tiré -> création d'un membre de raven_bot 
+    * Création class raven_bot_learner
+    * Besoin de savoir quand un bot a tiré ou a voulu tiré -> création d'un membre de raven_bot 
   qu'on met a true quand on a voulu tiré, il sera remit à false quand le learner aura aprit de ce cas la
-  c)a chaque (?) update du learner on sauvegarde les infos des/d'un autres bots (VITESSE DISTTOTARGET  AMMO TIMEVISIBLE HASFIRED)
-  d)dans le constructeur de rbl (raven bot learner) on créé un jeu de donnée d'apprentissage en fonction des données sauvegardés au préalable
-  e)instanciation du perceptron + création du model ds le cstr
-  f)test du model avec un autre jeu de donné  ds le cstr
+    * A chaque update du learner on sauvegarde les infos des/d'un autres bots (VITESSE DISTTOTARGET AMMO TIMEVISIBLE HASFIRED)
+    * Dans le constructeur de rbl (raven bot learner) on créé un jeu de donnée d'apprentissage en fonction des données sauvegardés au préalable
+    * Instanciation du perceptron + création du model ds le cstr
+    * test du model avec un autre jeu de donné  ds le cstr
 
 2) Modification de la classe Raven_WeaponSystem  : ajout d'un comportement flou lorsqu'un agent tire. La méthode ajoutée "InitializeFuzzyModule()" contient les éléments définissant cette logique floue. La méthode "AddNoiseToAim()" a été modifiée pour modifier la précision en fonction de la logique floue nouvellement implémentée. Les variables considérées pour cette logique floue sont :
 
