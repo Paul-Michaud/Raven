@@ -56,13 +56,13 @@ void Raven_WeaponSystem::Initialize()
   m_WeaponMap.clear();
 
   //set up the container
-  m_pCurrentWeapon = new FlameThrower(m_pOwner);
+  m_pCurrentWeapon = new Blaster(m_pOwner);
 
-  m_WeaponMap[type_blaster]         = 0;
+  m_WeaponMap[type_blaster]         = m_pCurrentWeapon;
   m_WeaponMap[type_shotgun]         = 0;
   m_WeaponMap[type_rail_gun]        = 0;
   m_WeaponMap[type_rocket_launcher] = 0;
-  m_WeaponMap[type_submachine_gun] = m_pCurrentWeapon;
+  m_WeaponMap[type_submachine_gun] = 0;
 }
 
 //-------------------------------- SelectWeapon -------------------------------
@@ -104,7 +104,7 @@ void Raven_WeaponSystem::SelectWeapon()
 
   else
   {
-    m_pCurrentWeapon = m_WeaponMap[type_submachine_gun];
+    m_pCurrentWeapon = m_WeaponMap[type_blaster];
   }
 }
 
