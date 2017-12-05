@@ -22,7 +22,7 @@
 #include "armory/Projectile_Pellet.h"
 #include "armory/Projectile_Slug.h"
 #include "armory/Projectile_Bolt.h"
-#include "armory/Flame.h"
+#include "armory/Bullet.h"
 #include "goals/Goal_Think.h"
 #include "goals/Raven_Goal_Types.h"
 
@@ -364,8 +364,8 @@ void Raven_Game::AddShotGunPellet(Raven_Bot* shooter, Vector2D target)
 #endif
 }
 
-//------------------------- AddFlame -----------------------------------
-void Raven_Game::AddFlame(Raven_Bot* shooter, Vector2D target)
+//------------------------- AddBullet -----------------------------------
+void Raven_Game::AddBullet(Raven_Bot* shooter, Vector2D target)
 {
 	Raven_Projectile* rp = new Pellet(shooter, target);
 

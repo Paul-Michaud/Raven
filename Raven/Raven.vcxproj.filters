@@ -274,10 +274,10 @@
     <ClCompile Include="Team.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="armory\Flame.cpp">
-      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    <ClCompile Include="armory\Bullet.cpp">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
     </ClCompile>
-    <ClCompile Include="armory\FlameThrower.cpp">
+    <ClCompile Include="armory\Weapon_SubmachineGun.cpp">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClCompile>
   </ItemGroup>
@@ -629,10 +629,10 @@
     <ClInclude Include="TeamColor.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="armory\Flame.h">
-      <Filter>Game\weapons &amp; projectiles\weapons</Filter>
+    <ClInclude Include="armory\Bullet.h">
+      <Filter>Game\weapons &amp; projectiles\projectiles</Filter>
     </ClInclude>
-    <ClInclude Include="armory\FlameThrower.h">
+    <ClInclude Include="armory\Weapon_SubmachineGun.h">
       <Filter>Game\weapons &amp; projectiles\weapons</Filter>
     </ClInclude>
   </ItemGroup>

@@ -50,7 +50,7 @@ double GetMaxRoundsBotCanCarryForWeapon(int WeaponType)
 
   case type_submachine_gun:
 
-	  return script->GetDouble("FlameThrower_MaxRoundsCarried");
+	  return script->GetDouble("SubmachineGun_MaxRoundsCarried");
 
   default:
 
@@ -86,19 +86,19 @@ double Raven_Feature::TotalWeaponStrength(Raven_Bot* pBot)
   const double MaxRoundsForShotgun = GetMaxRoundsBotCanCarryForWeapon(type_shotgun);
   const double MaxRoundsForRailgun = GetMaxRoundsBotCanCarryForWeapon(type_rail_gun);
   const double MaxRoundsForRocketLauncher = GetMaxRoundsBotCanCarryForWeapon(type_rocket_launcher);
-  const double MaxRoundsForFlamethrower = GetMaxRoundsBotCanCarryForWeapon(type_submachine_gun);
-  const double TotalRoundsCarryable = MaxRoundsForShotgun + MaxRoundsForRailgun + MaxRoundsForRocketLauncher + MaxRoundsForFlamethrower;
+  const double MaxRoundsForSubmachineGun = GetMaxRoundsBotCanCarryForWeapon(type_submachine_gun);
+  const double TotalRoundsCarryable = MaxRoundsForShotgun + MaxRoundsForRailgun + MaxRoundsForRocketLauncher + MaxRoundsForSubmachineGun;
 
   double NumSlugs      = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_rail_gun);
   double NumCartridges = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_shotgun);
   double NumRockets    = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_rocket_launcher);
-  double NumFlame = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_submachine_gun);
+  double NumBullet = (double)pBot->GetWeaponSys()->GetAmmoRemainingForWeapon(type_submachine_gun);
   //the value of the tweaker (must be in the range 0-1) indicates how much
   //desirability value is returned even if a bot has not picked up any weapons.
   //(it basically adds in an amount for a bot's persistent weapon -- the blaster)
   const double Tweaker = 0.1;
 
-  return Tweaker + (1-Tweaker)*(NumSlugs + NumCartridges + NumRockets + NumFlame)/(MaxRoundsForShotgun + MaxRoundsForRailgun + MaxRoundsForRocketLauncher + MaxRoundsForFlamethrower);
+  return Tweaker + (1-Tweaker)*(NumSlugs + NumCartridges + NumRockets + NumBullet)/(MaxRoundsForShotgun + MaxRoundsForRailgun + MaxRoundsForRocketLauncher + MaxRoundsForSubmachineGun);
 }
 
 //------------------------------- HealthScore ---------------------------------

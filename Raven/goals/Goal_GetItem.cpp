@@ -32,7 +32,7 @@ int ItemTypeToGoalType(int gt)
 
   case type_submachine_gun:
 
-	  return goal_get_flamethrower;
+	  return goal_get_submachine;
   default: throw std::runtime_error("Goal_GetItem cannot determine item type");
 
   }//end switch

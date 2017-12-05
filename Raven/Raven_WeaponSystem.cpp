@@ -3,7 +3,7 @@
 #include "armory/Weapon_RailGun.h"
 #include "armory/Weapon_ShotGun.h"
 #include "armory/Weapon_Blaster.h"
-#include "armory/FlameThrower.h"
+#include "armory/Weapon_SubmachineGun.h"
 #include "Raven_Bot.h"
 #include "misc/utils.h"
 #include "lua/Raven_Scriptor.h"
@@ -136,7 +136,7 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
 
   case type_submachine_gun:
 
-	  w = new FlameThrower(m_pOwner); break;
+	  w = new SubmachineGun(m_pOwner); break;
 
   }//end switch
   
