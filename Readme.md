@@ -1,5 +1,5 @@
 # Projet Raven
-## UQAC trimestre automne 2017 - Cours IA jeux vidéo (8IAR125)
+## UQAC trimestre automne 2017 - Cours Intelligence artificielle pour le jeu vidéo (8IAR125)
 
 ### Membres
 
